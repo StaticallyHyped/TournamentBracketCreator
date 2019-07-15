@@ -2,5 +2,10 @@
     <string name="app_name">TournamentBracketCreator</string>
     <string name="action_settings">Settings</string>
     <string name="has_account">Already have a login name and want to start a tournament as a host? Login with your credentials.
-        \nNote you will only be able to save tournament Win/Loss records and affect player ratings if you login as a host.</string>
+        </string>
+    <string name="login_note">Note: you will only be able to save tournament Win/Loss records and affect player ratings if you login as a host.</string>
+    <string name="login_logo">Table Tennis Tournament\nBracket Creator</string>
+    <string name="add_player_btn">Add a player to the list</string>
+    <string name="remove_player">Remove from list</string>
+    <string name="start_tourn_button">Start The Tournament</string>
 </resources>

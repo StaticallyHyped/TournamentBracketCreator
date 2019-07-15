@@ -9,27 +9,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.tournamentbracketcreator.view.PlayerpoolViewModel;
+import com.example.tournamentbracketcreator.view.PlayerpoolBFragmentViewModel;
 import com.example.tournamentbracketcreator.R;
 
-public class PlayerpoolFragment extends Fragment {
+public class PlayerpoolBFragment extends Fragment {
 
-    private PlayerpoolViewModel mViewModel;
+    private PlayerpoolBFragmentViewModel mViewModel;
 
-    public static PlayerpoolFragment newInstance() {
-        return new PlayerpoolFragment();
+    public static PlayerpoolBFragment newInstance() {
+        return new PlayerpoolBFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_playerpool, container, false);
+        return inflater.inflate(R.layout.fragment_playerpoolb, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PlayerpoolViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(PlayerpoolBFragmentViewModel.class);
         // TODO: Use the ViewModel
     }
 

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class LoginFragment extends Fragment {
     public Button guestBtn, hostBtn;
     public TextInputEditText userName;
     public EditText password;
+    FragmentManager fm;
 
 
     public static LoginFragment newInstance() {
@@ -44,12 +46,20 @@ public class LoginFragment extends Fragment {
         userName = root.findViewById(R.id.fragment_login_usernameTE);
         password = root.findViewById(R.id.fragment_login_passwordTE);
         openStartnavFragment(root);
+        fm = getActivity().getSupportFragmentManager();
         //openFragment(root);
 
         Log.d(TAG, "onCreateView: start");
         return root;
         
     }
+   /* @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: called");
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+*/
 
     public boolean canClose(){
         return false;
@@ -59,14 +69,6 @@ public class LoginFragment extends Fragment {
         public void replaceFragment(Fragment fragment);
     }
 
-    /*public void openFragment (final View view){
-
-        StartnavFragment startnavFragment = new StartnavFragment();
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
-                .beginTransaction();
-        sharedViewModel.openNewFrag(view, hostBtn, fragmentTransaction, login_fragment_container, startnavFragment);
-
-    }*/
 
     public void openStartnavFragment (final View view){
 
@@ -75,21 +77,19 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 StartnavFragment startnavFragment = new StartnavFragment();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
-                        .beginTransaction();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                        fragmentTransaction.replace(R.id.login_fragment_container, startnavFragment)
+                        .addToBackStack(null);
 
-                fragmentTransaction.replace(R.id.login_fragment_container, startnavFragment)
-                .addToBackStack(null);
                 Log.d(TAG, "onClick: added to backstack");
                 fragmentTransaction.commit();
                 view.setVisibility(View.INVISIBLE);
+
             }
         });
         Log.d(TAG, "openStartnavFragment: exiting");
 
     }
-
-
 
    /* @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

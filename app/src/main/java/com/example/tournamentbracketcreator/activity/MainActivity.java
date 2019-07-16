@@ -4,21 +4,27 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.tournamentbracketcreator.R;
+import com.example.tournamentbracketcreator.adapter.ViewPagerAdapter;
 import com.example.tournamentbracketcreator.fragment.LoginFragment;
+import com.example.tournamentbracketcreator.fragment.PlayerpoolBFragment;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
     private static final String LOGIN_FRAGMENT = "LoginFragment";
 
     public static final String TAG = "MainActivity";
+    FragmentManager fm;
     //private LoginFragment loginFragment;
+    View tournPoolFragContainer;
 
 
     @Override
@@ -27,53 +33,56 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportFragmentManager().addOnBackStackChangedListener(this);
-        /*ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);*/
-        shouldDisplayHomeUp();
+        fm = getSupportFragmentManager();
+        fm.beginTransaction().addToBackStack(null).commit();
+       // tournPoolFragContainer = findViewById(R.id.tourn_pool_frag_container);
 
 
-        Log.d(TAG, "onCreate: before initLoginFrag");
-       // initializeLoginFragment();
         Log.d(TAG, "onCreate: afterInitLoginFrag");
 
     }
-   /* @Override
+
+    @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
+        Log.d(TAG, "onBackPressed: pressed!");
+        if (getSupportFragmentManager().getBackStackEntryCount() > 2) {
+            Log.d(TAG, "onBackPressed: backstack has this many entries:" +
+                    getSupportFragmentManager().getBackStackEntryCount());
             getFragmentManager().popBackStack();
-        } else {
             super.onBackPressed();
+        } else {
+            Log.d(TAG, "onBackPressed: Fewer than 2");
+            fm.beginTransaction().replace(R.id.login_fragment_container, new LoginFragment())
+                    .commit();
+            finish();
         }
-    }*/
+    }
 
 
-   @Override
-   public void onBackPressed() {
-       Log.d(TAG, "onBackPressed: called");
-       FragmentManager fragmentManager = getSupportFragmentManager();
-       LoginFragment fragment = (LoginFragment) fragmentManager.
-               findFragmentById(R.id.login_fragment_container);
-       if((fragment == null) || fragment.canClose()){
-           super.onBackPressed();
-       } else {
-           Log.d(TAG, "onBackPressed: fragment closed");
-       }
+    public void onHomePressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 2) {
+            Log.d(TAG, "onBackPressed: backstack has this many entries:" +
+                    getSupportFragmentManager().getBackStackEntryCount());
+            //getFragmentManager().popBackStack();
+            super.onBackPressed();
+        } else {
+            Log.d(TAG, "onBackPressed: Fewer than 2");
+            fm.beginTransaction().replace(R.id.login_fragment_container, new LoginFragment())
+                    .commit();
+        }
+    }
 
-
-   }
-
-    /*@Override
-    public boolean onSupportNavigateUp() {
-       onBackPressed();
-        return true;
-    }*/
 
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -88,9 +97,9 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         setScreenSize();
     }
 
-    public void shouldDisplayHomeUp(){
-       boolean canGoBack = getSupportFragmentManager().getBackStackEntryCount()>0;
-       getSupportActionBar().setDisplayHomeAsUpEnabled(canGoBack);
+    public void shouldDisplayHomeUp() {
+        boolean canGoBack = getSupportFragmentManager().getBackStackEntryCount() > 0;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(canGoBack);
     }
 
     private void setScreenSize() {
@@ -101,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         // TODO create BracketsApplication class
         //  BracketsApplication.getInstance().setScreenHeight(height);
     }
-
 
 
     //TODO add toolbar (?)
@@ -118,35 +126,25 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        Log.d(TAG, "onOptionsItemSelected: item selected");
         int id = item.getItemId();
-        switch (id){
-            case R.id.home:
+        switch (id) {
+            case android.R.id.home:
                 Log.d(TAG, "onOptionsItemSelected: home button pressed");
-                LoginFragment fragment =
-                        (LoginFragment) getSupportFragmentManager().findFragmentById(R.id.login_fragment_container);
-                if(fragment.canClose()) {
-                    return super.onOptionsItemSelected(item);
-                } else {
-
-                    return true;  // indicate we are handling this
-                }
+                onHomePressed();
+                Log.d(TAG, "onOptionsItemSelected: item" + item);
+                return true;
             case R.id.action_settings:
                 Log.d(TAG, "onOptionsItemSelected: case:settings");
-               return true;
+                return true;
 
-                default:
-                    return super.onOptionsItemSelected(item);
 
         }
-        //noinspection SimplifiableIfStatement
-       /* if (id == R.id.action_settings) {
-            finish();
-        }*/
-
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackStackChanged() {
-    shouldDisplayHomeUp();
+        shouldDisplayHomeUp();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.tournamentbracketcreator.fragment;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.tournamentbracketcreator.R;
+import com.example.tournamentbracketcreator.StartTournActivity;
 import com.example.tournamentbracketcreator.adapter.ViewPagerAdapter;
 import com.example.tournamentbracketcreator.view.StartnavViewModel;
 
@@ -28,12 +30,10 @@ public class StartnavFragment extends Fragment {
         return new StartnavFragment();
     }
 
-    PlayerpoolAFragment playerpoolAFragment = new PlayerpoolAFragment();
+
     WLRecordsFragment wlRecordsFragment = new WLRecordsFragment();
     RatingsFragment ratingsFragment = new RatingsFragment();
-    View fragPoolContainer;
-    public ViewPager viewPager;
-    public ViewPagerAdapter vAdapter;
+
 
 
     @Override
@@ -51,7 +51,8 @@ public class StartnavFragment extends Fragment {
         viewPager.setAdapter(vAdapter);*/
         //openPlayerPoolAFragment(root);
 
-        startTournActivity(root, startTourn, playerpoolAFragment);
+        //startTournActivity(root, startTourn, playerpoolAFragment, playerpoolBFragment);
+        startTournActivity(startTourn);
         openNewFrag(root, viewWL, wlRecordsFragment);
         openNewFrag(root, viewRatings, ratingsFragment);
         //startTournActivity(startTourn);
@@ -61,10 +62,10 @@ public class StartnavFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         /*viewPager = getActivity().findViewById(R.id.main_view_pager);
         //viewPager.setAdapter(new ViewPagerAdapter(getActivity().getSupportFragmentManager()));
         viewPager.setAdapter(new ViewPagerAdapter(getFragmentManager()));*/
-        super.onActivityCreated(savedInstanceState);
         /*vAdapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
 
         //this seems like it's going to break stuff, but here we go anyway
@@ -89,7 +90,6 @@ public class StartnavFragment extends Fragment {
 
 
     private void openNewFrag(final View view, Button button, final Fragment fragment) {
-        Log.d(TAG, "openNewFrag: ");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,8 +107,19 @@ public class StartnavFragment extends Fragment {
         });
 
     }
+    private void startTournActivity(Button button) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), StartTournActivity.class);
+                //intent.putExtra("inflate_poola", 1);
+                startActivity(intent);
+            }
+        });
+    }
 
-    private void startTournActivity(final View view, Button button, final Fragment fragment) {
+    /*private void startTournActivity(final View view, Button button, final Fragment fragmentA,
+                                    final Fragment fragmentB) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,13 +127,15 @@ public class StartnavFragment extends Fragment {
 
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
                         .beginTransaction();
-                fragmentTransaction.hide(fragment);
-                fragmentTransaction.replace(R.id.login_fragment_container, fragment)
-                        .addToBackStack("frag_player_pool");
+                //fragmentTransaction.hide(fragment);
+                fragmentTransaction.replace(R.id.login_fragment_container, fragmentA)
+                        .addToBackStack(null);
                 fragmentTransaction.commit();
+//                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//                ft.add(R.id.poolb_container, fragmentB).addToBackStack("frag_poolb").commit();
             }
         });
 
-    }
+    }*/
 
 }

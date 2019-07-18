@@ -8,4 +8,5 @@
     <string name="add_player_btn">Add a player to the list</string>
     <string name="remove_player">Remove from list</string>
     <string name="start_tourn_button">Start The Tournament</string>
+    <string name="title_activity_start_tourn">StartTournActivity</string>
 </resources>

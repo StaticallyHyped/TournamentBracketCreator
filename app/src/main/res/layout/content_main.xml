@@ -7,16 +7,26 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
 
-    <fragment
-        android:id="@+id/main_activity_fragment"
-        android:name="com.example.tournamentbracketcreator.fragment.LoginFragment"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
     <FrameLayout
         android:id="@+id/login_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        tools:layout_editor_absoluteX="8dp">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/poolb_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:layout_constraintLeft_toRightOf="@id/login_fragment_container">
 
     </FrameLayout>
 </android.support.constraint.ConstraintLayout>

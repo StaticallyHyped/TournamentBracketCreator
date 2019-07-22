@@ -20,10 +20,6 @@ public class PlayerpoolBFragment extends Fragment {
     private int page;
     private Button startTournBtn;
 
-    //orig from 7/16/19 16:44
-    /*public static PlayerpoolBFragment newInstance() {
-        return new PlayerpoolBFragment();
-    }*/
 
     public static PlayerpoolBFragment newInstance(int page, String title) {
         PlayerpoolBFragment poolBFrag = new PlayerpoolBFragment();

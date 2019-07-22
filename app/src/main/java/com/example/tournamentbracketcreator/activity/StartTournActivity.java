@@ -1,4 +1,4 @@
-package com.example.tournamentbracketcreator;
+package com.example.tournamentbracketcreator.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.example.tournamentbracketcreator.R;
 import com.example.tournamentbracketcreator.fragment.PlayerpoolAFragment;
 import com.example.tournamentbracketcreator.fragment.PlayerpoolBFragment;
 
@@ -25,10 +26,15 @@ public class StartTournActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start_tourn);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //TODO add poolfragments/activity to backstack
+        //TODO inflate menu
 
         ViewPager vpPager = (ViewPager) findViewById(R.id.tourn_pool_vp);
         adapterViewPager = new PagerAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
+        vpPager.setClipToPadding(false);
+        vpPager.setPageMargin(12);
 
     }
 
@@ -62,6 +68,10 @@ public class StartTournActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return "Page " + position;
         }
+        @Override
+        public float getPageWidth(int position) {
+        return 0.85f;
+    }
     }
 
 }

@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.tournamentbracketcreator.R;
-import com.example.tournamentbracketcreator.StartTournActivity;
-import com.example.tournamentbracketcreator.adapter.ViewPagerAdapter;
+import com.example.tournamentbracketcreator.activity.StartTournActivity;
 import com.example.tournamentbracketcreator.view.StartnavViewModel;
 
 public class StartnavFragment extends Fragment {

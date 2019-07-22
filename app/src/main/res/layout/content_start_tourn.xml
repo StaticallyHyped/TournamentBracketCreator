@@ -1,11 +1,11 @@
-<FrameLayout android:id="@+id/start_tourn_layout"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/start_tourn_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
-    tools:layout_editor_absoluteX="8dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-   >
+    android:background="#E3F0E3"
+    tools:layout_editor_absoluteX="8dp">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/tourn_pool_vp"

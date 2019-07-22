@@ -1,38 +1,27 @@
 package com.example.tournamentbracketcreator.activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
+import com.amazonaws.mobile.config.AWSConfiguration;
+import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.example.tournamentbracketcreator.R;
-import com.example.tournamentbracketcreator.adapter.ViewPagerAdapter;
 import com.example.tournamentbracketcreator.fragment.LoginFragment;
-import com.example.tournamentbracketcreator.fragment.PlayerpoolAFragment;
-import com.example.tournamentbracketcreator.fragment.PlayerpoolBFragment;
-import com.example.tournamentbracketcreator.fragment.StartnavFragment;
+import com.example.tournamentbracketcreator.model.MySQLConnector;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
     public static final String TAG = "MainActivity";
-    FragmentManager fm;
     public LoginFragment loginFragment = new LoginFragment();
-    public Button startTournBtn;
-    public Button startNavBtn;
-    StartnavFragment snf;
-
-
+    private AWSAppSyncClient mAWSAppSyncClient;
 
 
     @Override
@@ -42,63 +31,29 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
+        mAWSAppSyncClient = AWSAppSyncClient.builder()
+                .context(getApplicationContext())
+                .awsConfiguration(new AWSConfiguration(getApplicationContext()))
+                .build();
+        
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTran = fm.beginTransaction();
         fragmentTran.replace(R.id.login_fragment_container, loginFragment, "login_frag")
                 .addToBackStack("login_frag").commit();
-        //START innerClass ViewPager experiment
+        
+        try {
+            Log.d(TAG, "onCreate: trying to connect");
+            MySQLConnector.makeConnection();
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.d(TAG, "onCreate: failed to connect");
+        }
 
-
-
-
-        /*//START goToStartNav experiment
-        StartnavFragment snf = (StartnavFragment) getSupportFragmentManager().
-                findFragmentById(R.id.login_fragment);
-        startNavBtn = findViewById(R.id.fragment_login_usernameTE);
-        //snf = getSupportFragmentManager().findFragmentById(R.id.login_fragment);
-        //tournPoolFragContainer = findViewById(R.id.tourn_pool_frag_container);
-        goToStartNav(startNavBtn);
-        //startTournActivity(startTournBtn, snf);*/
         Log.d(TAG, "onCreate: afterInitLoginFrag");
     }
+    
 
-
-    /*private void startTournActivity(Button button, final Fragment fragmentA) {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //viewPager = getActivity().findViewById(R.id.tourn_pool_pager);
-
-                FragmentTransaction fragmentTransaction =
-                        fm.beginTransaction();
-                //fragmentTransaction.hide(fragment);
-                fragmentTransaction.replace(R.id.login_fragment_container, fragmentA)
-                        .addToBackStack(null);
-                fragmentTransaction.commit();
-                *//*FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.add(R.id.poolb_container, fragmentB).addToBackStack("frag_poolb").commit();*//*
-            }
-        });
-
-    }*/
-    private void goToStartNav(Button button){
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StartnavFragment startnavFragment = new StartnavFragment();
-
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.login_fragment_container, startnavFragment)
-                        .commit();
-            }
-        });
-
-
-
-    }
 
     @Override
     public void onBackPressed() {

@@ -14,7 +14,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/poola_CL"
-        android:layout_width="343dp"
+        android:layout_width="360dp"
         android:layout_height="646dp">
 
         <android.support.v7.widget.RecyclerView
@@ -24,6 +24,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:background="#E9ACC0"
+            android:foregroundTintMode="add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -32,6 +34,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/poola_btn_CL"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -40,7 +43,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:contentDescription="add player"
             android:src="@drawable/ic_baseline_arrow_forward_ios_24px"
@@ -64,9 +66,9 @@
 
         <Button
             android:id="@+id/add_new_playerBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="16dp"
             android:text="@string/add_player_btn"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -74,7 +76,7 @@
 
         <Button
             android:id="@+id/remove_playerBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"

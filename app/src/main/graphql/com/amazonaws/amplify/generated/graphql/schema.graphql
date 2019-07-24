@@ -1,0 +1,305 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Losses {
+  content: String!
+  lossid: String!
+  playerid: ID!
+}
+
+type LossesConnection {
+  items: [Losses]
+  nextToken: String
+}
+
+type Mutation {
+  addResult(id: ID!, losses: String, player_name: String!, wins: String): Results
+  addTTPlayer(id: ID!, losses: String, name: String!, wins: String): TTPlayer
+  createLosses(input: CreateLossesInput!): Losses
+  createResults(input: CreateResultsInput!): Results
+  createTTPlayer(input: CreateTTPlayerInput!): TTPlayer
+  createWins(input: CreateWinsInput!): Wins
+  deleteLosses(input: DeleteLossesInput!): Losses
+  deleteResults(input: DeleteResultsInput!): Results
+  deleteTTPlayer(input: DeleteTTPlayerInput!): TTPlayer
+  deleteWins(input: DeleteWinsInput!): Wins
+  updateLosses(input: UpdateLossesInput!): Losses
+  updateResults(input: UpdateResultsInput!): Results
+  updateTTPlayer(input: UpdateTTPlayerInput!): TTPlayer
+  updateWins(input: UpdateWinsInput!): Wins
+}
+
+type PaginatedTTPlayers {
+  nextToken: String
+  ttplayers: [TTPlayer!]!
+}
+
+type Query {
+  allTTPlayers(count: Int, nextToken: String): PaginatedTTPlayers!
+  getLosses(lossid: String!, playerid: ID!): Losses
+  getResults(id: ID!): Results
+  getTTPlayer(id: ID!, name: String!): TTPlayer
+  getWins(playerid: ID!, winid: String!): Wins
+  listLosses(filter: TableLossesFilterInput, limit: Int, nextToken: String): LossesConnection
+  listResults(filter: TableResultsFilterInput, limit: Int, nextToken: String): ResultsConnection
+  listTTPlayers(filter: TableTTPlayerFilterInput, limit: Int, nextToken: String): TTPlayerConnection
+  listWins(filter: TableWinsFilterInput, limit: Int, nextToken: String): WinsConnection
+}
+
+type Results {
+  id: ID!
+  losses: String
+  player_name: String!
+  wins: String
+}
+
+type ResultsConnection {
+  items: [Results]
+  nextToken: String
+}
+
+type Subscription {
+  onCreateLosses(content: String, lossid: String, playerid: ID): Losses @aws_subscribe(mutations : ["createLosses"])
+  onCreateResults(id: ID, losses: String, player_name: String, wins: String): Results @aws_subscribe(mutations : ["createResults"])
+  onCreateTTPlayer(id: ID, name: String): TTPlayer @aws_subscribe(mutations : ["createTTPlayer"])
+  onCreateWins(content: String, playerid: ID, winid: String): Wins @aws_subscribe(mutations : ["createWins"])
+  onDeleteLosses(content: String, lossid: String, playerid: ID): Losses @aws_subscribe(mutations : ["deleteLosses"])
+  onDeleteResults(id: ID, losses: String, player_name: String, wins: String): Results @aws_subscribe(mutations : ["deleteResults"])
+  onDeleteTTPlayer(id: ID, name: String): TTPlayer @aws_subscribe(mutations : ["deleteTTPlayer"])
+  onDeleteWins(content: String, playerid: ID, winid: String): Wins @aws_subscribe(mutations : ["deleteWins"])
+  onUpdateLosses(content: String, lossid: String, playerid: ID): Losses @aws_subscribe(mutations : ["updateLosses"])
+  onUpdateResults(id: ID, losses: String, player_name: String, wins: String): Results @aws_subscribe(mutations : ["updateResults"])
+  onUpdateTTPlayer(id: ID, name: String): TTPlayer @aws_subscribe(mutations : ["updateTTPlayer"])
+  onUpdateWins(content: String, playerid: ID, winid: String): Wins @aws_subscribe(mutations : ["updateWins"])
+}
+
+type TTPlayer {
+  id: ID!
+  losses: [Losses]
+  name: String!
+  wins: [Wins]
+}
+
+type TTPlayerConnection {
+  items: [TTPlayer]
+  nextToken: String
+}
+
+type Wins {
+  content: String!
+  playerid: ID!
+  winid: String!
+}
+
+type WinsConnection {
+  items: [Wins]
+  nextToken: String
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+input CreateLossesInput {
+  content: String!
+  lossid: String!
+  playerid: ID!
+}
+
+input CreateResultsInput {
+  losses: String
+  player_name: String!
+  wins: String
+}
+
+input CreateTTPlayerInput {
+  id: ID!
+  name: String!
+}
+
+input CreateWinsInput {
+  content: String!
+  playerid: ID!
+  winid: String!
+}
+
+input DeleteLossesInput {
+  lossid: String!
+  playerid: ID!
+}
+
+input DeleteResultsInput {
+  id: ID!
+}
+
+input DeleteTTPlayerInput {
+  id: ID!
+  name: String!
+}
+
+input DeleteWinsInput {
+  playerid: ID!
+  winid: String!
+}
+
+input ModelBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input ModelFloatFilterInput {
+  between: [Float]
+  contains: Float
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+  notContains: Float
+}
+
+input ModelIDFilterInput {
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+}
+
+input ModelIntFilterInput {
+  between: [Int]
+  contains: Int
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+  notContains: Int
+}
+
+input ModelStringFilterInput {
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+}
+
+input TableBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input TableFloatFilterInput {
+  between: [Float]
+  contains: Float
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+  notContains: Float
+}
+
+input TableIDFilterInput {
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+}
+
+input TableIntFilterInput {
+  between: [Int]
+  contains: Int
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+  notContains: Int
+}
+
+input TableLossesFilterInput {
+  content: TableStringFilterInput
+  lossid: TableStringFilterInput
+  playerid: TableIDFilterInput
+}
+
+input TableResultsFilterInput {
+  id: TableIDFilterInput
+  losses: TableStringFilterInput
+  player_name: TableStringFilterInput
+  wins: TableStringFilterInput
+}
+
+input TableStringFilterInput {
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+}
+
+input TableTTPlayerFilterInput {
+  id: TableIDFilterInput
+  name: TableStringFilterInput
+}
+
+input TableWinsFilterInput {
+  content: TableStringFilterInput
+  playerid: TableIDFilterInput
+  winid: TableStringFilterInput
+}
+
+input UpdateLossesInput {
+  content: String
+  lossid: String!
+  playerid: ID!
+}
+
+input UpdateResultsInput {
+  id: ID!
+  losses: String
+  player_name: String
+  wins: String
+}
+
+input UpdateTTPlayerInput {
+  id: ID!
+  name: String!
+}
+
+input UpdateWinsInput {
+  content: String
+  playerid: ID!
+  winid: String!
+}

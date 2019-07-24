@@ -4,12 +4,15 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:3.3.0'
         classpath 'com.amazonaws:aws-android-sdk-appsync-gradle-plugin:2.9.+'
-        
+        //classpath 'com.apollographql.apollo:apollo-gradle-plugin:x.y.z'
+        classpath 'com.apollographql.apollo:apollo-gradle-plugin:1.0.1'
+
+        //compileOnly 'org.jetbrains:annotations:13.0'
+        //testCompileOnly 'org.jetbrains:annotations:13.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -19,7 +22,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 

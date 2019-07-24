@@ -1,0 +1,26 @@
+{
+    "home": {
+        "awscloudformation": {
+            "AuthRoleName": "chris-home-20190718182744-authRole",
+            "UnauthRoleArn": "arn:aws:iam::962710389177:role/chris-home-20190718182744-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::962710389177:role/chris-home-20190718182744-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "chris-home-20190718182744-deployment",
+            "UnauthRoleName": "chris-home-20190718182744-unauthRole",
+            "StackName": "chris-home-20190718182744",
+            "StackId": "arn:aws:cloudformation:us-west-2:962710389177:stack/chris-home-20190718182744/68698220-a9c4-11e9-92ea-0297b9e8ab64"
+        }
+    },
+    "ttbtest": {
+        "awscloudformation": {
+            "AuthRoleName": "chris-ttbtest-20190722141613-authRole",
+            "UnauthRoleArn": "arn:aws:iam::962710389177:role/chris-ttbtest-20190722141613-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::962710389177:role/chris-ttbtest-20190722141613-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "chris-ttbtest-20190722141613-deployment",
+            "UnauthRoleName": "chris-ttbtest-20190722141613-unauthRole",
+            "StackName": "chris-ttbtest-20190722141613",
+            "StackId": "arn:aws:cloudformation:us-west-2:962710389177:stack/chris-ttbtest-20190722141613/ee3eab10-acc5-11e9-a0ab-0257c37ead4a"
+        }
+    }
+}

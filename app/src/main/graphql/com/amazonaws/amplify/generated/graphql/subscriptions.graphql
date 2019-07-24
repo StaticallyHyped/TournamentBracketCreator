@@ -1,0 +1,145 @@
+# this is an auto generated file. This will be overwritten
+subscription OnCreateLosses($content: String, $lossid: String, $playerid: ID) {
+  onCreateLosses(content: $content, lossid: $lossid, playerid: $playerid) {
+    content
+    lossid
+    playerid
+  }
+}
+subscription OnCreateResults(
+  $id: ID
+  $losses: String
+  $player_name: String
+  $wins: String
+) {
+  onCreateResults(
+    id: $id
+    losses: $losses
+    player_name: $player_name
+    wins: $wins
+  ) {
+    id
+    losses
+    player_name
+    wins
+  }
+}
+subscription OnCreateTtPlayer($id: ID, $name: String) {
+  onCreateTTPlayer(id: $id, name: $name) {
+    id
+    losses {
+      content
+      lossid
+      playerid
+    }
+    name
+    wins {
+      content
+      playerid
+      winid
+    }
+  }
+}
+subscription OnCreateWins($content: String, $playerid: ID, $winid: String) {
+  onCreateWins(content: $content, playerid: $playerid, winid: $winid) {
+    content
+    playerid
+    winid
+  }
+}
+subscription OnDeleteLosses($content: String, $lossid: String, $playerid: ID) {
+  onDeleteLosses(content: $content, lossid: $lossid, playerid: $playerid) {
+    content
+    lossid
+    playerid
+  }
+}
+subscription OnDeleteResults(
+  $id: ID
+  $losses: String
+  $player_name: String
+  $wins: String
+) {
+  onDeleteResults(
+    id: $id
+    losses: $losses
+    player_name: $player_name
+    wins: $wins
+  ) {
+    id
+    losses
+    player_name
+    wins
+  }
+}
+subscription OnDeleteTtPlayer($id: ID, $name: String) {
+  onDeleteTTPlayer(id: $id, name: $name) {
+    id
+    losses {
+      content
+      lossid
+      playerid
+    }
+    name
+    wins {
+      content
+      playerid
+      winid
+    }
+  }
+}
+subscription OnDeleteWins($content: String, $playerid: ID, $winid: String) {
+  onDeleteWins(content: $content, playerid: $playerid, winid: $winid) {
+    content
+    playerid
+    winid
+  }
+}
+subscription OnUpdateLosses($content: String, $lossid: String, $playerid: ID) {
+  onUpdateLosses(content: $content, lossid: $lossid, playerid: $playerid) {
+    content
+    lossid
+    playerid
+  }
+}
+subscription OnUpdateResults(
+  $id: ID
+  $losses: String
+  $player_name: String
+  $wins: String
+) {
+  onUpdateResults(
+    id: $id
+    losses: $losses
+    player_name: $player_name
+    wins: $wins
+  ) {
+    id
+    losses
+    player_name
+    wins
+  }
+}
+subscription OnUpdateTtPlayer($id: ID, $name: String) {
+  onUpdateTTPlayer(id: $id, name: $name) {
+    id
+    losses {
+      content
+      lossid
+      playerid
+    }
+    name
+    wins {
+      content
+      playerid
+      winid
+    }
+  }
+}
+subscription OnUpdateWins($content: String, $playerid: ID, $winid: String) {
+  onUpdateWins(content: $content, playerid: $playerid, winid: $winid) {
+    content
+    playerid
+    winid
+  }
+}

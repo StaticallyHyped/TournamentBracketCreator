@@ -1,0 +1,120 @@
+# this is an auto generated file. This will be overwritten
+query AllTtPlayers($count: Int, $nextToken: String) {
+  allTTPlayers(count: $count, nextToken: $nextToken) {
+    nextToken
+    ttplayers {
+      id
+      losses {
+        content
+        lossid
+        playerid
+      }
+      name
+      wins {
+        content
+        playerid
+        winid
+      }
+    }
+  }
+}
+query GetLosses($lossid: String!, $playerid: ID!) {
+  getLosses(lossid: $lossid, playerid: $playerid) {
+    content
+    lossid
+    playerid
+  }
+}
+query GetResults($id: ID!) {
+  getResults(id: $id) {
+    id
+    losses
+    player_name
+    wins
+  }
+}
+query GetTtPlayer($id: ID!, $name: String!) {
+  getTTPlayer(id: $id, name: $name) {
+    id
+    losses {
+      content
+      lossid
+      playerid
+    }
+    name
+    wins {
+      content
+      playerid
+      winid
+    }
+  }
+}
+query GetWins($playerid: ID!, $winid: String!) {
+  getWins(playerid: $playerid, winid: $winid) {
+    content
+    playerid
+    winid
+  }
+}
+query ListLosses(
+  $filter: TableLossesFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listLosses(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      content
+      lossid
+      playerid
+    }
+    nextToken
+  }
+}
+query ListResults(
+  $filter: TableResultsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listResults(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      losses
+      player_name
+      wins
+    }
+    nextToken
+  }
+}
+query ListTtPlayers(
+  $filter: TableTTPlayerFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listTTPlayers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      losses {
+        content
+        lossid
+        playerid
+      }
+      name
+      wins {
+        content
+        playerid
+        winid
+      }
+    }
+    nextToken
+  }
+}
+query ListWins($filter: TableWinsFilterInput, $limit: Int, $nextToken: String) {
+  listWins(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      content
+      playerid
+      winid
+    }
+    nextToken
+  }
+}

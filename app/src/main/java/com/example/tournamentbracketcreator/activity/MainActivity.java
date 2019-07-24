@@ -13,15 +13,19 @@ import android.view.MenuItem;
 
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
+import com.apollographql.apollo.ApolloClient;
 import com.example.tournamentbracketcreator.R;
 import com.example.tournamentbracketcreator.fragment.LoginFragment;
 import com.example.tournamentbracketcreator.model.MySQLConnector;
+
+import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
     public static final String TAG = "MainActivity";
     public LoginFragment loginFragment = new LoginFragment();
     private AWSAppSyncClient mAWSAppSyncClient;
+    private static final String BASE_URL = "https://et4lknhrqfbbrlridkhhjgxefe.appsync-api.us-west-2.amazonaws.com/graphql";
 
 
     @Override
@@ -31,11 +35,17 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        /*Use ApolloClient to initiate connection
         mAWSAppSyncClient = AWSAppSyncClient.builder()
                 .context(getApplicationContext())
                 .awsConfiguration(new AWSConfiguration(getApplicationContext()))
+                .build();*/
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+        ApolloClient apolloClient = ApolloClient.builder()
+                .serverUrl(BASE_URL)
+                .okHttpClient(okHttpClient)
                 .build();
-        
+
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTran = fm.beginTransaction();

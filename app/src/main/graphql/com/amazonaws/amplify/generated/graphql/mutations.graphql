@@ -1,0 +1,144 @@
+# this is an auto generated file. This will be overwritten
+mutation AddResult(
+  $id: ID!
+  $losses: String
+  $player_name: String!
+  $wins: String
+) {
+  addResult(id: $id, losses: $losses, player_name: $player_name, wins: $wins) {
+    id
+    losses
+    player_name
+    wins
+  }
+}
+mutation AddTtPlayer($id: ID!, $losses: String, $name: String!, $wins: String) {
+  addTTPlayer(id: $id, losses: $losses, name: $name, wins: $wins) {
+    id
+    losses {
+      content
+      lossid
+      playerid
+    }
+    name
+    wins {
+      content
+      playerid
+      winid
+    }
+  }
+}
+mutation CreateLosses($input: CreateLossesInput!) {
+  createLosses(input: $input) {
+    content
+    lossid
+    playerid
+  }
+}
+mutation CreateResults($input: CreateResultsInput!) {
+  createResults(input: $input) {
+    id
+    losses
+    player_name
+    wins
+  }
+}
+mutation CreateTtPlayer($input: CreateTTPlayerInput!) {
+  createTTPlayer(input: $input) {
+    id
+    losses {
+      content
+      lossid
+      playerid
+    }
+    name
+    wins {
+      content
+      playerid
+      winid
+    }
+  }
+}
+mutation CreateWins($input: CreateWinsInput!) {
+  createWins(input: $input) {
+    content
+    playerid
+    winid
+  }
+}
+mutation DeleteLosses($input: DeleteLossesInput!) {
+  deleteLosses(input: $input) {
+    content
+    lossid
+    playerid
+  }
+}
+mutation DeleteResults($input: DeleteResultsInput!) {
+  deleteResults(input: $input) {
+    id
+    losses
+    player_name
+    wins
+  }
+}
+mutation DeleteTtPlayer($input: DeleteTTPlayerInput!) {
+  deleteTTPlayer(input: $input) {
+    id
+    losses {
+      content
+      lossid
+      playerid
+    }
+    name
+    wins {
+      content
+      playerid
+      winid
+    }
+  }
+}
+mutation DeleteWins($input: DeleteWinsInput!) {
+  deleteWins(input: $input) {
+    content
+    playerid
+    winid
+  }
+}
+mutation UpdateLosses($input: UpdateLossesInput!) {
+  updateLosses(input: $input) {
+    content
+    lossid
+    playerid
+  }
+}
+mutation UpdateResults($input: UpdateResultsInput!) {
+  updateResults(input: $input) {
+    id
+    losses
+    player_name
+    wins
+  }
+}
+mutation UpdateTtPlayer($input: UpdateTTPlayerInput!) {
+  updateTTPlayer(input: $input) {
+    id
+    losses {
+      content
+      lossid
+      playerid
+    }
+    name
+    wins {
+      content
+      playerid
+      winid
+    }
+  }
+}
+mutation UpdateWins($input: UpdateWinsInput!) {
+  updateWins(input: $input) {
+    content
+    playerid
+    winid
+  }
+}

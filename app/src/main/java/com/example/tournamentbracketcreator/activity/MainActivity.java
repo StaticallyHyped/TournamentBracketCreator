@@ -41,19 +41,17 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         FragmentTransaction fragmentTran = fm.beginTransaction();
         fragmentTran.replace(R.id.login_fragment_container, loginFragment, "login_frag")
                 .addToBackStack("login_frag").commit();
-        
-        try {
+        //No longer using MySQLConnector TODO delete below codeblock
+        /*try {
             Log.d(TAG, "onCreate: trying to connect");
             MySQLConnector.makeConnection();
         } catch (Exception e){
             e.printStackTrace();
             Log.d(TAG, "onCreate: failed to connect");
-        }
+        }*/
 
         Log.d(TAG, "onCreate: afterInitLoginFrag");
     }
-    
-
 
     @Override
     public void onBackPressed() {
@@ -73,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         }
     }
 
-
     public void onHomePressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
             Log.d(TAG, "onHomePressed: backstack has this many entries:" +
@@ -88,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
                     .commit();*/
         }
     }
-
 
     @Override
     protected void onStop() {
@@ -152,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
             case R.id.action_settings:
                 Log.d(TAG, "onOptionsItemSelected: case:settings");
                 return true;
-
 
         }
         return super.onOptionsItemSelected(item);

@@ -1,14 +1,11 @@
 package com.example.tournamentbracketcreator.view;
 
-import android.arch.lifecycle.ViewModel;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.lifecycle.ViewModel;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
-import com.example.tournamentbracketcreator.R;
-import com.example.tournamentbracketcreator.fragment.StartnavFragment;
 
 public class FragSharedViewModel extends ViewModel {
 

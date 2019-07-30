@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".fragment.PlayerpoolBFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/poolb_CL"
         android:layout_width="360dp"
         android:layout_height="646dp"
         android:layout_marginBottom="8dp">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/poolb_RV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,10 +27,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </android.support.v7.widget.RecyclerView>
-    </android.support.constraint.ConstraintLayout>
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/poolb_btn_CL"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,6 +48,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

@@ -1,32 +1,36 @@
 package com.example.tournamentbracketcreator.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.amazonaws.amplify.generated.graphql.ListTtPlayersQuery;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
-import com.apollographql.apollo.ApolloClient;
+import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
+import com.apollographql.apollo.GraphQLCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.example.tournamentbracketcreator.R;
 import com.example.tournamentbracketcreator.fragment.LoginFragment;
-import com.example.tournamentbracketcreator.model.MySQLConnector;
 
-import okhttp3.OkHttpClient;
+import javax.annotation.Nonnull;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
     public static final String TAG = "MainActivity";
     public LoginFragment loginFragment = new LoginFragment();
+    //TODO eventually add login/password functionality on MainActivity or LoginFragmentViewModel
     private AWSAppSyncClient mAWSAppSyncClient;
-    private static final String BASE_URL = "https://et4lknhrqfbbrlridkhhjgxefe.appsync-api.us-west-2.amazonaws.com/graphql";
 
+    private static final String BASE_URL = "https://et4lknhrqfbbrlridkhhjgxefe.appsync-api.us-west-2.amazonaws.com/graphql";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,33 +39,50 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        /*Use ApolloClient to initiate connection
         mAWSAppSyncClient = AWSAppSyncClient.builder()
                 .context(getApplicationContext())
                 .awsConfiguration(new AWSConfiguration(getApplicationContext()))
-                .build();*/
+                // If you are using complex objects (S3) then uncomment
+                //.s3ObjectManager(new S3ObjectManagerImplementation(new AmazonS3Client(AWSMobileClient.getInstance())))
+                .build();
+/* TODO Add functionality for login/user access for LoginFragment
         OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
         ApolloClient apolloClient = ApolloClient.builder()
                 .serverUrl(BASE_URL)
                 .okHttpClient(okHttpClient)
-                .build();
+                .build();*/
 
         getSupportFragmentManager().addOnBackStackChangedListener(this);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTran = fm.beginTransaction();
         fragmentTran.replace(R.id.login_fragment_container, loginFragment, "login_frag")
                 .addToBackStack("login_frag").commit();
-        //No longer using MySQLConnector TODO delete below codeblock
-        /*try {
-            Log.d(TAG, "onCreate: trying to connect");
-            MySQLConnector.makeConnection();
-        } catch (Exception e){
-            e.printStackTrace();
-            Log.d(TAG, "onCreate: failed to connect");
-        }*/
-
+        
+        //query();
+        Log.d(TAG, "onCreate: After Query");
         Log.d(TAG, "onCreate: afterInitLoginFrag");
     }
+
+    public void query(){
+        Log.d(TAG, "query: Starts");
+        mAWSAppSyncClient.query(ListTtPlayersQuery.builder().build())
+                .responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
+                .enqueue(playersCallback);
+    }
+
+    private GraphQLCall.Callback<ListTtPlayersQuery.Data> playersCallback = new GraphQLCall.Callback<ListTtPlayersQuery.Data>() {
+        @Override
+        public void onResponse(@Nonnull Response<ListTtPlayersQuery.Data> response) {
+            Log.d(TAG, "onResponse: Results: " + response.data().listTTPlayers().items().toString());
+            Log.d("Results", response.data().listTTPlayers().items().toString());
+        }
+
+        @Override
+        public void onFailure(@Nonnull ApolloException e) {
+            Log.d(TAG, "onFailure: " + e.toString());
+            Log.d("ERROR", e.toString());
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -158,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
             case R.id.action_settings:
                 Log.d(TAG, "onOptionsItemSelected: case:settings");
                 return true;
-
         }
         return super.onOptionsItemSelected(item);
     }

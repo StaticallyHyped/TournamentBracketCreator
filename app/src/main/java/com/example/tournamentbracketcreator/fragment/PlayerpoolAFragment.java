@@ -1,11 +1,16 @@
 package com.example.tournamentbracketcreator.fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,18 +18,38 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.example.tournamentbracketcreator.adapter.SmartFragmentStatePagerAdapter;
+import com.amazonaws.amplify.generated.graphql.AllTtPlayersQuery;
+import com.amazonaws.amplify.generated.graphql.ListTtPlayersQuery;
+import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
+import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
+import com.apollographql.apollo.GraphQLCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
+import com.example.tournamentbracketcreator.activity.StartTournActivity;
+import com.example.tournamentbracketcreator.adapter.TournPoolRVAdapter;
 import com.example.tournamentbracketcreator.adapter.ViewPagerAdapter;
+import com.example.tournamentbracketcreator.model.ClientFactory;
 import com.example.tournamentbracketcreator.view.PlayerpoolAViewModel;
 import com.example.tournamentbracketcreator.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 public class PlayerpoolAFragment extends Fragment {
+    public static final String TAG = "PlayerpoolAFragment";
 
     private PlayerpoolAViewModel mViewModel;
     private String title;
     private int page;
     public ViewPager viewPager;
     public ViewPagerAdapter vAdapter;
+    RecyclerView mRecyclerView;
+    TournPoolRVAdapter mAdapter;
+    private AWSAppSyncClient mAWSAppSynClient;
+    //from StartTournActivity
+    private List<ListTtPlayersQuery.Item> players = new ArrayList<>();
 
     public static PlayerpoolAFragment newInstance(int page, String title) {
         PlayerpoolAFragment poolAFrag = new PlayerpoolAFragment();
@@ -34,17 +59,19 @@ public class PlayerpoolAFragment extends Fragment {
         poolAFrag.setArguments(args);
         return poolAFrag;
     }
-    public static final String TAG = "PlayerpoolAFragment";
 
     public Button addToList, removeFromList;
     public ImageButton addToTournPool, removeFromTournPool;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-    //good for initializing any data you may want to
+        //good for initializing any data you may want to
         super.onCreate(savedInstanceState);
         page = getArguments().getInt("someInt", 0);
         title = getArguments().getString("stringTitle");
+
+        //try fiddling with this method (context) if it doesn't work
+        ClientFactory.getInstance(getContext());
 
     }
 
@@ -59,19 +86,70 @@ public class PlayerpoolAFragment extends Fragment {
         addToTournPool = root.findViewById(R.id.add_to_tournBtn);
         removeFromTournPool = root.findViewById(R.id.remove_from_tournBtn);
 
-        /*viewPager = root.findViewById(R.id.tourn_pool_pager);
-        //vAdapter = new SmartFragmentStatePagerAdapter()
+        mRecyclerView = root.findViewById(R.id.poola_RV);
+        //From dev.to/kkemple
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter = new TournPoolRVAdapter(getContext());
 
-        vAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        //vAdapter = new ViewPagerAdapter(getChildFragmentManager(), PlayerpoolAFragment.newInstance(0, "pool_a"));
-        viewPager.setAdapter(vAdapter);*/
-        //viewPager.setClipToPadding(false);
-        //viewPager.setPageMargin(12);
+        //from appsync-app
+
+        mRecyclerView.setAdapter(mAdapter);
+        //StartnavViewModel model = ViewModelProviders.of(this).get(StartnavViewModel.class);
 
         //return inflater.inflate(R.layout.fragment_playerpoola, container, false);
         Log.d(TAG, "onCreateView: exits");
+//        ClientFactory.getInstance(getContext());
         return root;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        query();
+    }
+
+    public void query() {
+        if (mAWSAppSynClient == null) {
+            Log.d(TAG, "query: mAWSAppSyncClient is null - creating new one");
+            mAWSAppSynClient = ClientFactory.getInstance(getContext());
+        }
+        ClientFactory.appSyncClient().query(ListTtPlayersQuery.builder().build())
+                .responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
+                .enqueue(playersCallback);
+        Log.d(TAG, "query: from ClientFactory.appSyncClient");
+        mAWSAppSynClient.query(ListTtPlayersQuery.builder().build())
+                .responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
+                .enqueue(playersCallback);
+        Log.d(TAG, "query: from mAWSAppSyncClient");
+
+        Log.d(TAG, "query: enqeueing");
+    }
+    private GraphQLCall.Callback<ListTtPlayersQuery.Data> playersCallback =
+            new GraphQLCall.Callback<ListTtPlayersQuery.Data>() {
+                @Override
+                public void onResponse(@Nonnull Response<ListTtPlayersQuery.Data> response) {
+                    if (response.data() != null){
+                        Log.d(TAG, "onResponse: response.data: not null");
+                       // Log.d(TAG, "onResponse: " + players.toString());
+                        Log.d(TAG, "onResponse: response: " + response);
+                        Log.d(TAG, "onResponse: .data: " + response.data());
+                        Log.d(TAG, "onResponse: .data.listTTplayers: " + response.data().listTTPlayers());
+                        players = new ArrayList<>(response.data().listTTPlayers().items());
+                        Log.d(TAG, "onResponse: after setting value of players");
+                    } else {
+                        Log.d(TAG, "onResponse: response.data is null, creating new ArrayList");
+                        players = new ArrayList<>();
+                    }
+                    Log.d(TAG, "onResponse: starting mAdapter.setItems(players)");
+                    mAdapter.setItems(players);
+                    //mAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onFailure(@Nonnull ApolloException e) {
+                    Log.d(TAG, "onFailure: starts");
+                }
+            };
 
     /*@Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

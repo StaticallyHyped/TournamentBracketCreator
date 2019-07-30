@@ -1,6 +1,6 @@
 package com.example.tournamentbracketcreator.view;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 
 public class RatingsViewModel extends ViewModel {
     // TODO: Implement the ViewModel

@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         Log.d(TAG, "onCreate: afterInitLoginFrag");
     }
 
-    public void query(){
+   /* public void query(){
         Log.d(TAG, "query: Starts");
         mAWSAppSyncClient.query(ListTtPlayersQuery.builder().build())
                 .responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
             Log.d(TAG, "onFailure: " + e.toString());
             Log.d("ERROR", e.toString());
         }
-    };
+    };*/
 
     @Override
     public void onBackPressed() {

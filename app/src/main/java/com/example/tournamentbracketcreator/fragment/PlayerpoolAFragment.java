@@ -1,16 +1,6 @@
 package com.example.tournamentbracketcreator.fragment;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,19 +8,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.amazonaws.amplify.generated.graphql.AllTtPlayersQuery;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import com.amazonaws.amplify.generated.graphql.ListTtPlayersQuery;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
 import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.example.tournamentbracketcreator.activity.StartTournActivity;
+import com.example.tournamentbracketcreator.R;
 import com.example.tournamentbracketcreator.adapter.TournPoolRVAdapter;
 import com.example.tournamentbracketcreator.adapter.ViewPagerAdapter;
 import com.example.tournamentbracketcreator.model.ClientFactory;
 import com.example.tournamentbracketcreator.view.PlayerpoolAViewModel;
-import com.example.tournamentbracketcreator.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +66,8 @@ public class PlayerpoolAFragment extends Fragment {
         title = getArguments().getString("stringTitle");
 
         //try fiddling with this method (context) if it doesn't work
+        //TODO test to see if running ClientFactory.getInstance() in the query method works w/o
+        //instantiation here in the onCreate
         ClientFactory.getInstance(getContext());
 
     }
@@ -96,7 +93,6 @@ public class PlayerpoolAFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         //StartnavViewModel model = ViewModelProviders.of(this).get(StartnavViewModel.class);
 
-        //return inflater.inflate(R.layout.fragment_playerpoola, container, false);
         Log.d(TAG, "onCreateView: exits");
 //        ClientFactory.getInstance(getContext());
         return root;
@@ -113,14 +109,9 @@ public class PlayerpoolAFragment extends Fragment {
             Log.d(TAG, "query: mAWSAppSyncClient is null - creating new one");
             mAWSAppSynClient = ClientFactory.getInstance(getContext());
         }
-        ClientFactory.appSyncClient().query(ListTtPlayersQuery.builder().build())
-                .responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
-                .enqueue(playersCallback);
-        Log.d(TAG, "query: from ClientFactory.appSyncClient");
         mAWSAppSynClient.query(ListTtPlayersQuery.builder().build())
                 .responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
                 .enqueue(playersCallback);
-        Log.d(TAG, "query: from mAWSAppSyncClient");
 
         Log.d(TAG, "query: enqeueing");
     }
@@ -129,10 +120,6 @@ public class PlayerpoolAFragment extends Fragment {
                 @Override
                 public void onResponse(@Nonnull Response<ListTtPlayersQuery.Data> response) {
                     if (response.data() != null){
-                        Log.d(TAG, "onResponse: response.data: not null");
-                       // Log.d(TAG, "onResponse: " + players.toString());
-                        Log.d(TAG, "onResponse: response: " + response);
-                        Log.d(TAG, "onResponse: .data: " + response.data());
                         Log.d(TAG, "onResponse: .data.listTTplayers: " + response.data().listTTPlayers());
                         players = new ArrayList<>(response.data().listTTPlayers().items());
                         Log.d(TAG, "onResponse: after setting value of players");

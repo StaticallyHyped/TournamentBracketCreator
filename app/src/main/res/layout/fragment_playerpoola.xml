@@ -15,7 +15,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/poola_CL"
         android:layout_width="360dp"
-        android:layout_height="646dp">
+        android:layout_height="wrap_content"
+        android:minHeight="100dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/poola_RV"
@@ -24,8 +25,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:background="#E9ACC0"
+            android:background="@android:color/white"
             android:foregroundTintMode="add"
+            android:minHeight="500dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -70,7 +72,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="16dp"
+            android:backgroundTint="#FFFFFF"
             android:text="@string/add_player_btn"
+            android:tint="#CE2222"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -80,10 +84,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:backgroundTint="#FFFFFFFF"
             android:text="@string/remove_player"
             app:layout_constraintBottom_toBottomOf="@+id/add_new_playerBtn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/add_new_playerBtn" />
+            app:layout_constraintStart_toEndOf="@+id/add_new_playerBtn"
+            app:layout_constraintTop_toTopOf="@+id/add_new_playerBtn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

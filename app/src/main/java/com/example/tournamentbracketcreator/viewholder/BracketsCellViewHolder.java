@@ -7,20 +7,27 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tournamentbracketcreator.R;
 import com.example.tournamentbracketcreator.animation.SlideAnimation;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class BracketsCellViewHolder extends RecyclerView.ViewHolder {
-    private TextView teamOneName, teamTwoName, teamOneScore, teamTwoScore;
+    private TextView teamOneName, teamTwoName;
+    private TextInputEditText teamOneScore, teamTwoScore;
     private Animation animation;
     private RelativeLayout root;
 
     public BracketsCellViewHolder(@NonNull View itemView) {
         super(itemView);
-        //teamOneName = itemView.findViewById(R.id.team_one_name);
-        //teamTwoName = itemView.findViewById(R.id.team_two_name);
+        teamOneName = itemView.findViewById(R.id.teamone_name);
+        teamTwoName = itemView.findViewById(R.id.teamtwo_name);
+        teamOneScore = itemView.findViewById(R.id.teamone_score);
+        teamTwoScore = itemView.findViewById(R.id.teamtwo_score);
+        root = itemView.findViewById(R.id.layout_cellbracket_RL);
+
     }
 
     public void setAnimation(int height){
@@ -39,27 +46,27 @@ public class BracketsCellViewHolder extends RecyclerView.ViewHolder {
         return teamTwoName;
     }
 
-    public void setTeamOneName(TextView teamOneName) {
+   /* public void setTeamOneName(TextView teamOneName) {
         this.teamOneName = teamOneName;
     }
 
     public void setTeamTwoName(TextView teamTwoName) {
         this.teamTwoName = teamTwoName;
-    }
+    }*/
 
-    public TextView getTeamOneScore() {
+    public TextInputEditText getTeamOneScore() {
         return teamOneScore;
     }
 
-    public void setTeamOneScore(TextView teamOneScore) {
+    /*public void setTeamOneScore(TextInputEditText teamOneScore) {
         this.teamOneScore = teamOneScore;
-    }
+    }*/
 
-    public TextView getTeamTwoScore() {
+    public TextInputEditText getTeamTwoScore() {
         return teamTwoScore;
     }
 
-    public void setTeamTwoScore(TextView teamTwoScore) {
+    /*public void setTeamTwoScore(TextInputEditText teamTwoScore) {
         this.teamTwoScore = teamTwoScore;
-    }
+    }*/
 }

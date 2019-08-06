@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".application.BracketsApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,7 +21,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activity.TournamentBracketActivity"
-            android:label="title_activity_tournament_bracket"
+            android:label="Tournament Bracket"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activity.TournPool_player_row_Activity" />
 

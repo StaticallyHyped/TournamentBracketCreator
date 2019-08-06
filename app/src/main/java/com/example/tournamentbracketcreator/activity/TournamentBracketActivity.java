@@ -31,16 +31,15 @@ public class TournamentBracketActivity extends AppCompatActivity {
         bracketFragment = new BracketsFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.bracket_container, bracketFragment, "brackets_frag");
+        transaction.replace(R.id.bracket_container, bracketFragment, "brackets_frag");
         transaction.commit();
         manager.executePendingTransactions();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-       // setScreenSize();
+        setScreenSize();
     }
 
     private void setScreenSize(){

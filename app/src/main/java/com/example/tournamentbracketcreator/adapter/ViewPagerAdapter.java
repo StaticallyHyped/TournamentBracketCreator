@@ -22,7 +22,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
+        Log.d(TAG, "getItem: returnNewInstance of fragment");
         //return new PlayerpoolAFragment();
         if (position == 0){
             Log.d(TAG, "getItem: position 0");
@@ -68,18 +68,21 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        Log.d(TAG, "instantiateItem: starts");
         return super.instantiateItem(container, position);
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
+        Log.d(TAG, "getPageTitle: page title");
         String title = getItem(position).getClass().getName();
         return title.subSequence(title.lastIndexOf(".") + 1, title.length());
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        Log.d(TAG, "destroyItem: starts");
         super.destroyItem(container, position, object);
     }
 }

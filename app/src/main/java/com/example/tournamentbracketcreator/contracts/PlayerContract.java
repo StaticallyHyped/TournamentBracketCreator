@@ -4,12 +4,9 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import static com.example.tournamentbracketcreator.model.AppProvider.CONTENT_AUTHORITY;
-import static com.example.tournamentbracketcreator.model.AppProvider.CONTENT_AUTHORITY_URI;
-
 public class PlayerContract {
 
-    public static final String PLAYERS_TABLE_NAME = "Players";
+    /*public static final String PLAYERS_TABLE_NAME = "Players";
 
     public static class Columns {
         public static final String _ID = BaseColumns._ID;
@@ -34,5 +31,5 @@ public class PlayerContract {
     }
     static long getCourseId(Uri uri){
         return ContentUris.parseId(uri);
-    }
+    }*/
 }

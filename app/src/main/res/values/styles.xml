@@ -20,6 +20,7 @@
     <style name="Widget.MaterialComponents.Button.RoundedButton" parent="Widget.MaterialComponents.Button">
         <item name="android:background">@drawable/rounded_button</item>
     </style>
+
     <style name="Widget.Material.Light.Button.RoundedImageButton" parent="Widget.AppCompat.Light.ActionButton">
         <item name="android:background">@drawable/rounded_image_button</item>
     </style>

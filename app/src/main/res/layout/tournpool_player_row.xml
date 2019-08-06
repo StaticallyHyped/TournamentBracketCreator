@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#F76868"
+        android:focusable="auto"
         android:textColor="#F4F6F7"
         tools:text="Bob Villa" />
 

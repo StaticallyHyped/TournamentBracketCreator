@@ -4,13 +4,13 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-public class HSlideAnimation extends Animation {
+public class SlideAnimation extends Animation {
 
     int mFromHeight;
     int mToHeight;
     View mView;
 
-    public HSlideAnimation(View view, int fromHeight, int toHeight) {
+    public SlideAnimation(View view, int fromHeight, int toHeight) {
         this.mFromHeight = fromHeight;
         this.mToHeight = toHeight;
         this.mView = view;

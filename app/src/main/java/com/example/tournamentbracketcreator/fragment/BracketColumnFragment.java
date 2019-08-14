@@ -57,6 +57,7 @@ public class BracketColumnFragment extends Fragment {
         mBracketRV = getView().findViewById(R.id.bracket_col_pairingRV);
     }
 
+
     public ArrayList<MatchData> getColumnList(){
         return playerData;
     }

@@ -69,14 +69,8 @@ public class StartTournActivity extends AppCompatActivity implements PlayerpoolA
         vpPager.setPageMargin(-12);
 
         vpPager.setOffscreenPageLimit(3);
-//        ((PlayerpoolAFragment)getSupportFragmentManager().findFragmentByTag("PoolAFrag").setOnFragmentAClickListner
-//                (this));
-
     }
-    /*@Override
-    public void onClickOnA(String message){
-        Log.d(TAG, "onClickOnA: do something");
-    }*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_start_tourn, menu);
@@ -86,6 +80,7 @@ public class StartTournActivity extends AppCompatActivity implements PlayerpoolA
     //from SO 1
     @Override
     public void onClickOnA(int position) {
+        Log.d(TAG, "onClickOnA: clicked");
         PlayerpoolBFragment poolBFrag = (PlayerpoolBFragment) getSupportFragmentManager()
                 .findFragmentByTag("Page 1");
     }

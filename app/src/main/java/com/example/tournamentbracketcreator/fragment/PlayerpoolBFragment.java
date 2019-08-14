@@ -60,9 +60,6 @@ public class PlayerpoolBFragment extends Fragment implements StartTournActivity.
         mRecyclerViewB.getAdapter().notifyDataSetChanged();
         mAdapterB.notifyDataSetChanged();
         mAdapterB.hasObservers();
-        String myTag = getTag();
-
-
         return root;
     }
 
@@ -80,18 +77,27 @@ public class PlayerpoolBFragment extends Fragment implements StartTournActivity.
     public void submit(final String s) {
         Log.d(TAG, "submit: pressed, " + s);
         poolBData = new ArrayList<>();
-        //poolBData.add(s);
-        //mAdapterB.setItems(poolBData);
         mAdapterB.setItems(Data.getTournPoolList());
         mAdapterB.notifyDataSetChanged();
 
     }
 
     private void startBracketActivity(){
+        //TODO pass all names that were added to the poolB fragment to the
+        //TODO brackets fragment
+        //Best to do this in a static Array? How/when to put the data?
+
         startTournBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), TournamentBracketActivity.class);
+            intent.putExtra("txt_name", "Roger");
+            intent.putExtra("txt_id", "id_number");
             startActivity(intent);
         });
+    }
+
+    private void getPlayerInfo(){
+
+
     }
     /*@Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

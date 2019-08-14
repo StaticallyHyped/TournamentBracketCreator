@@ -100,7 +100,7 @@ public class AddNewPlayerDialogFragment extends AppCompatDialogFragment {
         confirm = view.findViewById(R.id.dialog_confirm);
         cancel = view.findViewById(R.id.dialog_cancel);
         String title = getArguments().getString("title", "Enter Name");
-        getDialog().setTitle("Add New Player");
+        getDialog().setTitle("Add New PlayerData");
         //a new twist (for me at least) on the text input soft keyboard
         setCancel();
         name.requestFocus();

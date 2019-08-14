@@ -43,6 +43,7 @@ type Query {
   getResults(id: ID!): Results
   getTTPlayer(id: ID!, name: String!): TTPlayer
   getWins(playerid: ID!, winid: String!): Wins
+  getPlayerByName(name: String!): TTPlayer
   listLosses(filter: TableLossesFilterInput, limit: Int, nextToken: String): LossesConnection
   listResults(filter: TableResultsFilterInput, limit: Int, nextToken: String): ResultsConnection
   listTTPlayers(filter: TableTTPlayerFilterInput, limit: Int, nextToken: String): TTPlayerConnection

@@ -38,6 +38,7 @@ public class BracketsCellViewHolder extends RecyclerView.ViewHolder {
         root.startAnimation(animation);
     }
 
+    //Getters
     public TextView getTeamOneName() {
         return teamOneName;
     }
@@ -46,6 +47,15 @@ public class BracketsCellViewHolder extends RecyclerView.ViewHolder {
         return teamTwoName;
     }
 
+    public TextInputEditText getTeamOneScore() {
+        return teamOneScore;
+    }
+
+    public TextInputEditText getTeamTwoScore() {
+        return teamTwoScore;
+    }
+
+    //Setters
    /* public void setTeamOneName(TextView teamOneName) {
         this.teamOneName = teamOneName;
     }
@@ -54,17 +64,9 @@ public class BracketsCellViewHolder extends RecyclerView.ViewHolder {
         this.teamTwoName = teamTwoName;
     }*/
 
-    public TextInputEditText getTeamOneScore() {
-        return teamOneScore;
-    }
-
     /*public void setTeamOneScore(TextInputEditText teamOneScore) {
         this.teamOneScore = teamOneScore;
     }*/
-
-    public TextInputEditText getTeamTwoScore() {
-        return teamTwoScore;
-    }
 
     /*public void setTeamTwoScore(TextInputEditText teamTwoScore) {
         this.teamTwoScore = teamTwoScore;

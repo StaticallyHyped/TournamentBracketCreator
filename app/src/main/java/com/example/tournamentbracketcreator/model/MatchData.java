@@ -16,6 +16,7 @@ public class MatchData implements Serializable {
         this.height = height;
     }
 
+    //TODO update MatchData to take PlayerData as parameters
     public MatchData(CompetitorData competitorOne, CompetitorData competitorTwo) {
         this.competitorOne = competitorOne;
         this.competitorTwo = competitorTwo;
@@ -26,6 +27,7 @@ public class MatchData implements Serializable {
         return competitorOne;
     }
 
+    //TODO setCompetitorOne from poolRVData, by name
     public void setCompetitorOne(CompetitorData competitorOne) {
         this.competitorOne = competitorOne;
     }
@@ -33,7 +35,7 @@ public class MatchData implements Serializable {
     public CompetitorData getCompetitorTwo() {
         return competitorTwo;
     }
-
+    //TODO setCompetitorTwo from poolRVData, by name
     public void setCompetitorTwo(CompetitorData competitorTwo) {
         this.competitorTwo = competitorTwo;
     }

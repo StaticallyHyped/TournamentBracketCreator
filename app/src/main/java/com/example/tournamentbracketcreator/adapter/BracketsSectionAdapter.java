@@ -15,7 +15,7 @@ public class BracketsSectionAdapter extends FragmentStatePagerAdapter {
 
     private ArrayList<ColumnData> sectionList;
 
-    public BracketsSectionAdapter(FragmentManager fm, ArrayList<ColumnData> sectionList){
+    public BracketsSectionAdapter(FragmentManager fm, ArrayList<ColumnData> sectionList) {
         super(fm);
         this.sectionList = sectionList;
     }
@@ -26,10 +26,10 @@ public class BracketsSectionAdapter extends FragmentStatePagerAdapter {
         bundle.putSerializable("column_data", this.sectionList.get(position));
         BracketColumnFragment fragment = new BracketColumnFragment();
         bundle.putInt("section_number", position);
-        if (position > 0){
+        if (position > 0) {
             bundle.putInt("previous_section_size", sectionList.get(position - 1)
                     .getMatches().size());
-        } else if (position == 0){
+        } else if (position == 0) {
             bundle.putInt("previous_section_size", sectionList.get(position)
                     .getMatches().size());
         }

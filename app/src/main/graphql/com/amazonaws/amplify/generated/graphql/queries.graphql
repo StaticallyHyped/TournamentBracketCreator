@@ -56,6 +56,22 @@ query GetWins($playerid: ID!, $winid: String!) {
     winid
   }
 }
+query GetPlayerByName($name: String!) {
+  getPlayerByName(name: $name) {
+    id
+    losses {
+      content
+      lossid
+      playerid
+    }
+    name
+    wins {
+      content
+      playerid
+      winid
+    }
+  }
+}
 query ListLosses(
   $filter: TableLossesFilterInput
   $limit: Int

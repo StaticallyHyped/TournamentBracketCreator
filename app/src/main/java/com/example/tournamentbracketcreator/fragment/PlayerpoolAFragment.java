@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -145,7 +146,6 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
         mAWSAppSynClient.query(ListTtPlayersQuery.builder().build())
                 .responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
                 .enqueue(playersCallback);
-
         Log.d(TAG, "query: enqeueing");
     }
     private GraphQLCall.Callback<ListTtPlayersQuery.Data> playersCallback =
@@ -154,6 +154,7 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
                 public void onResponse(@Nonnull Response<ListTtPlayersQuery.Data> response) {
                     if (response.data() != null){
                         players = new ArrayList<>(response.data().listTTPlayers().items());
+                        Log.d(TAG, "onResponse: " + players);
                     } else {
                         players = new ArrayList<>();
                     }
@@ -173,7 +174,7 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
         //FragmentTransaction ft = get
         FragmentManager fm = getFragmentManager();
         AddNewPlayerDialogFragment newPlayerDialog = AddNewPlayerDialogFragment
-                .newInstance("Add Player");
+                .newInstance("Add PlayerData");
         //newPlayerDialog.setTargetFragment(PlayerpoolAFragment.this, 300);
         newPlayerDialog.show(fm, "fragment_add_player");
         mRecyclerView.getAdapter().notifyDataSetChanged();
@@ -184,10 +185,7 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
     @Override
     public void onAttach(Activity activity) {
         Log.d(TAG, "onAttach: starts");
-
-        Log.d(TAG, "onAttach: after super.onattach");
         mStartTournActivity = (StartTournActivity) activity;
-        Log.d(TAG, "onAttach: mStartTournActivity = activity");
         super.onAttach(activity);
         // super.onAttach(context);
     }
@@ -218,11 +216,11 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
     }
     //Overridden methods for the sake of debugging
 
-    @Override
+   /* @Override
     public void onHiddenChanged(boolean hidden) {
         Log.d(TAG, "onHiddenChanged: starts");
         super.onHiddenChanged(hidden);
-    }
+    }*/
 
     @Override
     public void onAttachFragment(Fragment childFragment) {

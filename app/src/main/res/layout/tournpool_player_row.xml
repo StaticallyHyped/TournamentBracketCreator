@@ -4,7 +4,7 @@
     android:id="@+id/layout_playeritem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingLeft="10dp">
 
     <Button
@@ -13,7 +13,15 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#F76868"
         android:focusable="auto"
+        android:minWidth="80dp"
+        android:textAlignment="center"
         android:textColor="#F4F6F7"
         tools:text="Bob Villa" />
+
+    <TextView
+        android:id="@+id/text_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
 
 </LinearLayout>

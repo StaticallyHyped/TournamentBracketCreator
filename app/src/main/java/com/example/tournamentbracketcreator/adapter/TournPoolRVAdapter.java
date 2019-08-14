@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +28,7 @@ public class TournPoolRVAdapter extends RecyclerView.Adapter<TournPoolRVAdapter.
     private enum hasSelected {YES, NO}
     private hasSelected mMode;
     //private ArrayList<String> tournPool = new ArrayList<>();
-    public static ArrayList<String> tournPool;
+    public static ArrayList<String[]> tournPool;
 
     //constructor from dev.to/kkemple. May need to include Context as parameter?
     public TournPoolRVAdapter(Context context){
@@ -44,23 +45,34 @@ public class TournPoolRVAdapter extends RecyclerView.Adapter<TournPoolRVAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: starts");
         ListTtPlayersQuery.Item item = playersData.get(position);
+        holder.txt_id.setVisibility(View.INVISIBLE);
         holder.txt_name.setText(item.name());
+        holder.txt_id.setText(item.id());
+
+
+        //Initialize ArrayList for tournament pool data
         tournPool = Data.getTournPoolList();
 
         mMode = hasSelected.NO;
         holder.playerContainer.setOnClickListener(v ->
         {
+            String[] player = new String[2];
             Log.d(TAG, "onBindViewHolder: clicked the container" + holder.playerContainer.getId());
             Log.d(TAG, "onBindViewHolder: clicked the button" + holder.txt_name.getId());
             switch (mMode){
                 case NO:
+                    player[0] = holder.txt_name.getText().toString();
+                    player[1] = holder.txt_id.getText().toString();
                     holder.playerContainer.setBackgroundColor(Color.LTGRAY);
-                    tournPool.add(holder.txt_name.getText().toString());
+                    tournPool.add(player);
+                    //tournPool.add(holder.txt_name.getText().toString());
                     mMode = hasSelected.YES;
                     break;
                 case YES:
                     holder.playerContainer.setBackgroundColor(Color.WHITE);
-                    tournPool.remove(holder.txt_name.getText().toString());
+                    /*String[] player = {holder.txt_name.getText().toString(),
+                            holder.txt_id.getText().toString()};*/
+                    tournPool.remove(player);
                     mMode = hasSelected.NO;
                     break;
                     default:
@@ -72,22 +84,24 @@ public class TournPoolRVAdapter extends RecyclerView.Adapter<TournPoolRVAdapter.
         });
         holder.txt_name.setOnClickListener(v -> {
             Log.d(TAG, "onBindViewHolder: button id: " + holder.txt_name.getId());
+            String[] player = new String[2];
             switch (mMode){
                 case NO:
+                    player[0] = holder.txt_name.getText().toString();
+                    player[1] = holder.txt_id.getText().toString();
                     holder.playerContainer.setBackgroundColor(Color.LTGRAY);
-                    tournPool.add(holder.txt_name.getText().toString());
+                    tournPool.add(player);
                     //Data.setTournPoolList(tournPool);
                     mMode = hasSelected.YES;
                     break;
                 case YES:
                     holder.playerContainer.setBackgroundColor(Color.WHITE);
-                    tournPool.remove(holder.txt_name.getText().toString());
+                    tournPool.remove(player);
                     mMode = hasSelected.NO;
                     break;
                 default:
                     holder.playerContainer.setBackgroundColor(Color.WHITE);
             }
-
         });
         Log.d(TAG, "onBindViewHolder: getTournPoolList: " + Data.getTournPoolList().toString());
         Data.setTournPoolList(tournPool);
@@ -98,13 +112,7 @@ public class TournPoolRVAdapter extends RecyclerView.Adapter<TournPoolRVAdapter.
     public int getItemCount() {
         Log.d(TAG, "getItemCount: " + playersData.size());
         return playersData.size();
-        //from CurriculumTracker
-        //If the list is null, or getCount == 0
-        /*if ((List<ListTtPlayersQuery.Item>.)){
-            return 1;
-        } else {
-            return playersData.getCount();
-        }*/
+
     }
     public void setItems(List<ListTtPlayersQuery.Item> items){
         playersData = items;
@@ -112,6 +120,7 @@ public class TournPoolRVAdapter extends RecyclerView.Adapter<TournPoolRVAdapter.
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         Button txt_name;
+        private TextView txt_id;
         //ConstraintLayout poolACL;
         LinearLayout playerContainer;
 
@@ -119,7 +128,7 @@ public class TournPoolRVAdapter extends RecyclerView.Adapter<TournPoolRVAdapter.
             super(itemView);
             Log.d(TAG, "ViewHolder: starts in itemView");
             this.txt_name = itemView.findViewById(R.id.txt_name);
-            //this.poolACL = itemView.findViewById(R.id.poola_CL);
+            this.txt_id = itemView.findViewById(R.id.text_id);
             this.playerContainer = itemView.findViewById(R.id.layout_playeritem);
             //txt_description= itemView.findViewById(R.id.txt_description);
         }

@@ -2,7 +2,7 @@
 A Java Android app I created for a Table Tennis club that I'm a member of. Users can add players to a player pool, which can then generate a double elimination tournament bracket from that pool. Historical Win/Loss data is stored on an AWS server which users can view within the app. From the Win/Loss records, players are given a power rating based on a modified Elo Ratings System algorithm, which can also be viewed by anyone with the app. 
 
 PLUGINS/DEPENDENCIES:
-- apply plugin: com.amazonaws.appsync, com.android.application, com.apollographql.android
+- apply plugins: com.amazonaws.appsync, com.android.application, com.apollographql.android
 - npm - check to see if it's already installed on your system using npm -v
 if not, install npm using npm install in your project's root folder
 

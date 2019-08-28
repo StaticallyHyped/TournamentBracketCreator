@@ -1,6 +1,6 @@
 package com.example.tournamentbracketcreator.fragment;
 
-import androidx.lifecycle.ViewModelProviders;
+//import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -40,20 +40,14 @@ public class StartnavFragment extends Fragment {
         Log.d(TAG, "onCreateView: starts");
         View root = inflater.inflate(R.layout.fragment_startnav, container, false);
 
-        mViewModel = ViewModelProviders.of(this).get(StartnavViewModel.class);
         startTourn = root.findViewById(R.id.fragment_startnav_startTournBtn);
         viewWL = root.findViewById(R.id.fragment_startnav_resultsBtn);
         viewRatings = root.findViewById(R.id.fragment_startnav_ratingsBtn);
-        /*viewPager = getActivity().findViewById(R.id.tourn_pool_pager);
-        vAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        viewPager.setAdapter(vAdapter);*/
-        //openPlayerPoolAFragment(root);
 
-        //startTournActivity(root, startTourn, playerpoolAFragment, playerpoolBFragment);
+
         startTournActivity(startTourn);
         openNewFrag(root, viewWL, wlRecordsFragment);
         openNewFrag(root, viewRatings, ratingsFragment);
-        //startTournActivity(startTourn);
 
         return root;
     }
@@ -61,14 +55,6 @@ public class StartnavFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        /*viewPager = getActivity().findViewById(R.id.main_view_pager);
-        //viewPager.setAdapter(new ViewPagerAdapter(getActivity().getSupportFragmentManager()));
-        viewPager.setAdapter(new ViewPagerAdapter(getFragmentManager()));*/
-        /*vAdapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
-
-        //this seems like it's going to break stuff, but here we go anyway
-        viewPager.setAdapter(vAdapter);*/
-
 
         // TODO: Use the ViewModel
     }

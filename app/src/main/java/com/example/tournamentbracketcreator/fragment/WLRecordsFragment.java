@@ -1,6 +1,6 @@
 package com.example.tournamentbracketcreator.fragment;
 
-import androidx.lifecycle.ViewModelProviders;
+//import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +29,7 @@ public class WLRecordsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(WLrecordsViewModel.class);
+       // mViewModel = ViewModelProviders.of(this).get(WLrecordsViewModel.class);
         // TODO: Use the ViewModel
     }
 

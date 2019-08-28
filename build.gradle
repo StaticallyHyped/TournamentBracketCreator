@@ -1,15 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+
     repositories {
         google()
         jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots'}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
-        classpath 'com.amazonaws:aws-android-sdk-appsync-gradle-plugin:2.9.+'
+        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.amazonaws:aws-android-sdk-appsync-gradle-plugin:2.9.0'
         //classpath 'com.apollographql.apollo:apollo-gradle-plugin:x.y.z'
         classpath 'com.apollographql.apollo:apollo-gradle-plugin:1.0.1'
+       // classpath deps.android_gradle_plugin
 
         //compileOnly 'org.jetbrains:annotations:13.0'
         //testCompileOnly 'org.jetbrains:annotations:13.0'
@@ -19,9 +22,11 @@ buildscript {
 }
 
 allprojects {
+   //addRepos(repositories)
     repositories {
         google()
         jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots'}
     }
 }
 

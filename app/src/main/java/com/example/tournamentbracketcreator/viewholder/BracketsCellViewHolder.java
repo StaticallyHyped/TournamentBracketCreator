@@ -1,8 +1,10 @@
 package com.example.tournamentbracketcreator.viewholder;
 
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,9 +17,11 @@ import com.example.tournamentbracketcreator.animation.SlideAnimation;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class BracketsCellViewHolder extends RecyclerView.ViewHolder {
+    public static final String TAG = "BracketsCellViewHolder";
     private TextView teamOneName, teamTwoName;
     private TextInputEditText teamOneScore, teamTwoScore;
     private Animation animation;
+    public ImageButton updateScoreButton;
     private RelativeLayout root;
 
     public BracketsCellViewHolder(@NonNull View itemView) {
@@ -26,9 +30,10 @@ public class BracketsCellViewHolder extends RecyclerView.ViewHolder {
         teamTwoName = itemView.findViewById(R.id.teamtwo_name);
         teamOneScore = itemView.findViewById(R.id.teamone_score);
         teamTwoScore = itemView.findViewById(R.id.teamtwo_score);
+        updateScoreButton = itemView.findViewById(R.id.update_score_button);
         root = itemView.findViewById(R.id.layout_cellbracket_RL);
-
     }
+
 
     public void setAnimation(int height){
         animation = new SlideAnimation(root, root.getHeight(), height);
@@ -55,20 +60,8 @@ public class BracketsCellViewHolder extends RecyclerView.ViewHolder {
         return teamTwoScore;
     }
 
-    //Setters
-   /* public void setTeamOneName(TextView teamOneName) {
-        this.teamOneName = teamOneName;
+    public ImageButton getUpdateScoreButton(){
+        return updateScoreButton;
     }
 
-    public void setTeamTwoName(TextView teamTwoName) {
-        this.teamTwoName = teamTwoName;
-    }*/
-
-    /*public void setTeamOneScore(TextInputEditText teamOneScore) {
-        this.teamOneScore = teamOneScore;
-    }*/
-
-    /*public void setTeamTwoScore(TextInputEditText teamTwoScore) {
-        this.teamTwoScore = teamTwoScore;
-    }*/
 }

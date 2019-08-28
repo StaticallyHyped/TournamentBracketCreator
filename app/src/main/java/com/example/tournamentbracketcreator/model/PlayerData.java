@@ -1,6 +1,9 @@
 package com.example.tournamentbracketcreator.model;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class PlayerData implements Serializable {
     public static final String TAG = "PlayerData";
@@ -12,13 +15,19 @@ public class PlayerData implements Serializable {
     private final String[] mLosses;
     private final String mRating;
 
-    public PlayerData(long id, String name, String[] wins, String[] losses, String rating) {
+    public PlayerData(long id, String name, @Nullable String[] wins, @Nullable String[] losses, @Nullable String rating) {
         this.m_Id = id;
         this.mName = name;
         this.mWins = wins;
         this.mLosses = losses;
         this.mRating = rating;
     }
+
+    public static ArrayList<PlayerData> winnersRoundTwoData = new ArrayList<>();
+    public static ArrayList<PlayerData> getWinnersRoundTwoData(){
+        return winnersRoundTwoData;
+    }
+
 
     public long getM_Id() {
         return m_Id;

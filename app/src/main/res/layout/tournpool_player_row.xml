@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="player"
+            type="com.example.tournamentbracketcreator.model.Player"/>
+        <variable name="callback"
+            type="com.example.tournamentbracketcreator.ui.PlayerClickCallback"/>
+    </data>
+
+<LinearLayout
     android:id="@+id/layout_playeritem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,3 +35,4 @@
         android:visibility="invisible" />
 
 </LinearLayout>
+</layout>

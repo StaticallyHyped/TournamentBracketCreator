@@ -31,8 +31,5 @@ public class Data {
         return this.name;
     }
 
-    @Override
-    public String toString() {
-        return this.name.toString();
-    }
+
 }

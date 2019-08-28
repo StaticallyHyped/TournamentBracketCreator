@@ -132,11 +132,7 @@ public class TournPoolRVAdapter extends RecyclerView.Adapter<TournPoolRVAdapter.
             this.playerContainer = itemView.findViewById(R.id.layout_playeritem);
             //txt_description= itemView.findViewById(R.id.txt_description);
         }
-        /*void bindData(ListTtPlayersQuery.Item item){
-            txt_name.setText(item.name());
-            // Only need  player name?
-            //txt_description.setText(item.description);
-        }*/
+
     }
 
 }

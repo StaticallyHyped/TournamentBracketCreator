@@ -13,8 +13,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -27,11 +32,18 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.example.tournamentbracketcreator.R;
 import com.example.tournamentbracketcreator.activity.StartTournActivity;
+import com.example.tournamentbracketcreator.adapter.PlayerAdapter;
 import com.example.tournamentbracketcreator.adapter.TournPoolBRVAdapter;
 import com.example.tournamentbracketcreator.adapter.TournPoolRVAdapter;
 import com.example.tournamentbracketcreator.adapter.ViewPagerAdapter;
+import com.example.tournamentbracketcreator.databinding.FragmentPlayerpoolaBinding;
+import com.example.tournamentbracketcreator.entity.PlayerEntity;
 import com.example.tournamentbracketcreator.model.ClientFactory;
 import com.example.tournamentbracketcreator.model.Data;
+import com.example.tournamentbracketcreator.model.Player;
+import com.example.tournamentbracketcreator.ui.PlayerClickCallback;
+import com.example.tournamentbracketcreator.view.PlayerListViewModel;
+import com.example.tournamentbracketcreator.view.PlayerViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +53,15 @@ import javax.annotation.Nonnull;
 public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogFragment.DialogEvents,
         View.OnClickListener {
     public static final String TAG = "PlayerpoolAFragment";
-
+   // private PlayerAdapter mPlayerAdapter;
+    public static final String KEY_PLAYER_ID = "player_id";
+    private FragmentPlayerpoolaBinding mBinding;
+    
     private StartTournActivity mStartTournActivity;
     private String title;
     private int page;
     public ViewPager viewPager;
-    public ViewPagerAdapter vAdapter;
+    private PlayerAdapter mPlayerAdapter;
     RecyclerView mRecyclerView;
     TournPoolRVAdapter mAdapter;
     private AWSAppSyncClient mAWSAppSynClient;
@@ -83,9 +98,6 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
         page = getArguments().getInt("someInt", 0);
         title = getArguments().getString("stringTitle");
 
-        //try fiddling with this method (context) if it doesn't work
-        //TODO test to see if running ClientFactory.getInstance() in the query method works w/o
-        //instantiation here in the onCreate
         ClientFactory.getInstance(getContext());
 
     }
@@ -95,7 +107,12 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
                              @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: starts");
         View root = inflater.inflate(R.layout.fragment_playerpoola, container, false);
-
+        
+//        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_playerpoola, container, false);
+//        mPlayerAdapter = new PlayerAdapter(mPlayerClickCallback);
+//        mBinding.poolaRV.setAdapter(mPlayerAdapter);
+        //mBinding.playersList.setAdapter(mPlayerAdapter);
+        // mPlayerAdapter
         addToList = root.findViewById(R.id.add_new_playerBtn);
         removeFromList = root.findViewById(R.id.remove_playerBtn);
         addToTournPool = root.findViewById(R.id.add_to_tournBtn);
@@ -115,10 +132,43 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated: starts");
         super.onActivityCreated(savedInstanceState);
+       
+//        final PlayerListViewModel viewModel = new ViewModelProvider(this).get(PlayerListViewModel.class);
+        //TODO add search button
+//        subscribeUi(viewModel.getPlayers());
+       // mBinding.setPlayerViewModel(model);
+       // subscribeToModel(model);
         onAddNewPlayerDialog();
         //addPlayerToTournPool();
         onClick(addToTournPool);
     }
+    
+    /*private void subscribeUi(LiveData<List<PlayerEntity>> liveData){
+        liveData.observe(this, new Observer<List<PlayerEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<PlayerEntity> playerEntities) {
+                if (playerEntities != null) {
+                    Log.d(TAG, "onChanged: not null");
+                    mBinding.setIsLoading(false);
+                    mPlayerAdapter.setPlayerList(playerEntities);
+                } else {
+                    Log.d(TAG, "onChanged: null");
+                    mBinding.setIsLoading(true);
+                }
+                
+                mBinding.executePendingBindings();
+            }
+        });
+    }*/
+    
+    /*private void subscribeToModel(final PlayerViewModel model){
+        model.getObservablePlayer().observe(this, new Observer<PlayerEntity>() {
+            @Override
+            public void onChanged(PlayerEntity playerEntity) {
+                model.setPlayer(playerEntity);
+            }
+        });
+    }*/
 
     @Override
     public void onResume() {
@@ -127,7 +177,7 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
         query();
     }
 
-    private void testPoolBtn(){
+    /*private void testPoolBtn(){
         addToTournPool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,7 +186,7 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
                 Log.d(TAG, "onClick: clicked arrow button: " + Data.getTournPoolList().toString());
             }
         });
-    }
+    }*/
 
     public void query() {
         if (mAWSAppSynClient == null) {
@@ -258,6 +308,14 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(PlayerpoolAViewModel.class);
         // TODO: Use the ViewModel
+    }*/
+    /*private final PlayerClickCallback mPlayerClickCallback = new PlayerClickCallback() {
+        @Override
+        public void onClick(Player player) {
+            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                ((StartTournActivity)) getActivity()).show(player);
+            }
+        }
     }*/
 
 }

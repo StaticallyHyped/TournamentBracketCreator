@@ -1,6 +1,6 @@
 package com.example.tournamentbracketcreator.fragment;
 
-import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,6 +8,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+//import androidx.lifecycle.ViewModelProviders;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ public class LoginFragment extends Fragment {
     public TextInputEditText userName;
     public EditText password;
     FragmentManager fm;
+   // private playerFragmentBinding mBinding;
 
 
     public static LoginFragment newInstance() {
@@ -39,7 +42,7 @@ public class LoginFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_login, container, false);
 
-        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+//        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         //constraintLayout = getView().findViewById(R.id.fragment_login_constraintLayout);
         guestBtn = root.findViewById(R.id.fragment_login_guestBtn);
         hostBtn = root.findViewById(R.id.fragment_login_hostBtn);

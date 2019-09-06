@@ -43,7 +43,7 @@ public class TournPoolBRVAdapter extends RecyclerView.Adapter<TournPoolBRVAdapte
         //Add your Getter here to loop through an arraylist and poolBList.get(position);
         Log.d(TAG, "onBindViewHolder: starts");
 
-        String[] playerArray = new String[2];
+        String[] playerArray;
         playerArray = poolList.get(position);
         String name = playerArray[0];
         String id = playerArray[1];

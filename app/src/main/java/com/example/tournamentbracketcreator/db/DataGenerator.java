@@ -94,7 +94,7 @@ public class DataGenerator {
            int winsNumber = rnd.nextInt(11);
            for (int i = 0; i < winsNumber; i++){
                WinEntity win = new WinEntity();
-               win.setPlayerId(player.getId());
+               win.setPlayerId(Integer.parseInt(player.getId()));
                //Win dummy data, random number of 0 - 11
                win.setText(Integer.toString(winsNumber));
                win.setPostedAt(new Date(System.currentTimeMillis()

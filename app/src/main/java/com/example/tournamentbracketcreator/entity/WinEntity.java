@@ -1,5 +1,7 @@
 package com.example.tournamentbracketcreator.entity;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -21,10 +23,14 @@ foreignKeys = {
 
 public class WinEntity implements Win {
     @PrimaryKey (autoGenerate = true)
-    private int id;
-    private int playerId;
-    private String text;
-    private Date postedAt;
+    @NonNull
+    public int id;
+
+    @ColumnInfo(name = "playerId")
+    public int playerId;
+
+    public String text;
+    public Date postedAt;
 
     @Override
     public int getId() {

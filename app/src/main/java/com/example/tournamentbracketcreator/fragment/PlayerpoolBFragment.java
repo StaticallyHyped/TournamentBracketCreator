@@ -83,11 +83,9 @@ public class PlayerpoolBFragment extends Fragment implements StartTournActivity.
     }
 
     private void startBracketActivity(){
-        //TODO pass all names that were added to the poolB fragment to the
-        //TODO brackets fragment
-        //Best to do this in a static Array? How/when to put the data?
 
         startTournBtn.setOnClickListener(v -> {
+            Log.d(TAG, "startBracketActivity: button clicked, starts");
             Intent intent = new Intent(getContext(), TournamentBracketActivity.class);
             intent.putExtra("txt_name", "Roger");
             intent.putExtra("txt_id", "id_number");
@@ -95,17 +93,5 @@ public class PlayerpoolBFragment extends Fragment implements StartTournActivity.
         });
     }
 
-    private void getPlayerInfo(){
-
-
-    }
-    /*@Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        *//*page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");*//*
-        mViewModel = ViewModelProviders.of(this).get(PlayerpoolBFragmentViewModel.class);
-        // TODO: Use the ViewModel
-    }*/
 
 }

@@ -22,10 +22,13 @@ public class BracketsApplication extends Application {
     }
 
     public AppDatabase getDatabase(){
-        return AppDatabase.getInstance(this, mAppExecutors);
+        Log.d(TAG, "getDatabase: starts");
+        return AppDatabase.getDatabase(this);
+        //return AppDatabase.getInstance(this, mAppExecutors);
     }
 
     public DataRepository getRepository(){
+        Log.d(TAG, "getRepository: starts");
         return DataRepository.getInstance(getDatabase());
     }
 

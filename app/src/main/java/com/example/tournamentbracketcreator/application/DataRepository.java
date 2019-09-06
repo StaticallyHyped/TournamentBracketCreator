@@ -1,5 +1,7 @@
 package com.example.tournamentbracketcreator.application;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
@@ -12,6 +14,7 @@ import com.example.tournamentbracketcreator.model.Player;
 import java.util.List;
 
 public class DataRepository {
+    public static final String TAG = "DataRepository";
     private static DataRepository sInstance;
 
     private final AppDatabase mDatabase;
@@ -20,18 +23,20 @@ public class DataRepository {
     private MediatorLiveData<List<CompetitorEntity>> mObservableCompetitors;
 
 
-    /*private DataRepository(final AppDatabase database) {
+    private DataRepository(final AppDatabase database) {
+        Log.d(TAG, "DataRepository: starts");
         mDatabase = database;
         mObservablePlayers = new MediatorLiveData<>();
         mObservablePlayers.addSource(mDatabase.playerDao().loadAllPlayers(),
                 playerEntities -> {
                     if (mDatabase.getDatabaseCreated().getValue() != null){
+                        Log.d(TAG, "DataRepository: not null");
                         mObservablePlayers.postValue(playerEntities);
                     }
                 });
-    }*/
+    }
 
-    private DataRepository(final AppDatabase database) {
+    /*private DataRepository(final AppDatabase database) {
         mDatabase = database;
         mObservableCompetitors = new MediatorLiveData<>();
         mObservableCompetitors.addSource(mDatabase.competitorDao().loadAllCompetitors(),
@@ -40,11 +45,13 @@ public class DataRepository {
                         mObservableCompetitors.postValue(competitorEntities);
                     }
                 });
-    }
+    }*/
     public static DataRepository getInstance(final AppDatabase database){
+        Log.d(TAG, "getInstance: starts");
         if (sInstance == null){
             synchronized (DataRepository.class) {
                 if (sInstance == null){
+                    Log.d(TAG, "getInstance: sInstance is null");
                     sInstance = new DataRepository(database);
                 }
             }
@@ -53,6 +60,7 @@ public class DataRepository {
     }
 
     public LiveData<List<PlayerEntity>> getPlayers() {
+        Log.d(TAG, "getPlayers: starts");
         return mObservablePlayers;
     }
 
@@ -63,7 +71,7 @@ public class DataRepository {
     public LiveData<List<CompetitorEntity>> getCompetitors(){
         return mObservableCompetitors;
     }
-    public LiveData<CompetitorEntity> loaderCompetitor(final int competitorId){
+    public LiveData<CompetitorEntity> loadCompetitor(final int competitorId){
         return mDatabase.competitorDao().loadCompetitor(competitorId);
     }
 

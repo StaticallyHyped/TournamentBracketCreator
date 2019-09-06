@@ -1,6 +1,7 @@
 package com.example.tournamentbracketcreator.view;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -14,19 +15,20 @@ import com.example.tournamentbracketcreator.entity.PlayerEntity;
 import java.util.List;
 
 public class PlayerListViewModel extends AndroidViewModel {
+    public static final String TAG = "PlayerListViewModel";
     private final DataRepository mRepository;
     private final MediatorLiveData<List<PlayerEntity>> mObservablePlayers;
 
     public PlayerListViewModel(@NonNull Application application) {
         super(application);
         mObservablePlayers = new MediatorLiveData<>();
-
         mRepository = ((BracketsApplication) application).getRepository();
         LiveData<List<PlayerEntity>> players = mRepository.getPlayers();
         mObservablePlayers.addSource(players, mObservablePlayers::setValue);
     }
 
     public LiveData<List<PlayerEntity>> getPlayers(){
+        Log.d(TAG, "getPlayers: starts");
         return mObservablePlayers;
     }
 

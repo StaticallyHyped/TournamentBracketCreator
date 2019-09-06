@@ -1,25 +1,26 @@
 package com.example.tournamentbracketcreator.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import com.example.tournamentbracketcreator.model.Player;
 
-import java.util.ArrayList;
-
 @Entity(tableName = "players")
 public class PlayerEntity implements Player {
     @PrimaryKey
-    private int id;
-    private String name;
+    @NonNull
+    public String id;
+    @NonNull
+    public String name;
 
 
     @Override
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
     @Override
@@ -51,7 +52,7 @@ public class PlayerEntity implements Player {
     }
     //used in TestData.java
     @Ignore
-    public PlayerEntity(int id, String name) {
+    public PlayerEntity(String id, String name) {
         this.id = id;
         this.name = name;
 

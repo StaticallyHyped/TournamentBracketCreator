@@ -39,7 +39,7 @@ public class BracketsCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     List<? extends MatchData> mPlayerList;
     private ArrayList<MatchData> updateMatch;
     private boolean handler;
-    public static CompetitorData competitor = null;
+//    public static CompetitorData competitor = null;
 //    public OnUpdateMatchClickListener mListener;
     public BracketsFragment bracketsFragment = new BracketsFragment();
 
@@ -115,8 +115,9 @@ public class BracketsCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String teamOneName = finalViewHolder.getTeamOneName().getText().toString();
 
             //String teamTwoScore = finalViewHolder.getTeamTwoScore().getText().toString();
-            final CompetitorData competitor = new CompetitorData(10, teamOneName,
-                    teamOneScore);
+            //Used in the onClick method
+//            final CompetitorData competitor = new CompetitorData(10, teamOneName,
+//                    teamOneScore);
 
             View.OnClickListener buttonListener = new View.OnClickListener() {
                
@@ -128,8 +129,8 @@ public class BracketsCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                        mArrowClickCallback.onArrowClick(v);
                     }*/
                     Log.d(TAG, "onClick: added competitor");
-                    CompetitorData.winnersRoundTwoData.add(competitor);
-                    bracketsFragment.getPlayer(competitor);
+//                    CompetitorData.winnersRoundTwoData.add(competitor);
+//                    bracketsFragment.getPlayer(competitor);
 
                 }
             };
@@ -158,10 +159,12 @@ public class BracketsCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 .getCompetitorOne().getName());
         viewHolder.getTeamTwoName().setText(playerData.get(position)
                 .getCompetitorTwo().getName());
-        viewHolder.getTeamOneScore().setText(playerData.get(position)
-                .getCompetitorOne().getScore());
-        viewHolder.getTeamTwoScore().setText(playerData.get(position)
-                .getCompetitorTwo().getScore());
+       /* viewHolder.getTeamOneScore().setText(playerData.get(position)
+                .getCompetitorOne().getScore());*/
+        viewHolder.getTeamOneScore().setText("0");
+        /*viewHolder.getTeamTwoScore().setText(playerData.get(position)
+                .getCompetitorTwo().getScore());*/
+        viewHolder.getTeamTwoScore().setText("0");
     }
 
     @Override

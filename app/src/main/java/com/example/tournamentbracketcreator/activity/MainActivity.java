@@ -58,31 +58,8 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         fragmentTran.replace(R.id.login_fragment_container, loginFragment, "login_frag")
                 .addToBackStack("login_frag").commit();
         
-        //query();
-        Log.d(TAG, "onCreate: After Query");
-        Log.d(TAG, "onCreate: afterInitLoginFrag");
+
     }
-
-   /* public void query(){
-        Log.d(TAG, "query: Starts");
-        mAWSAppSyncClient.query(ListTtPlayersQuery.builder().build())
-                .responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
-                .enqueue(playersCallback);
-    }
-
-    private GraphQLCall.Callback<ListTtPlayersQuery.Data> playersCallback = new GraphQLCall.Callback<ListTtPlayersQuery.Data>() {
-        @Override
-        public void onResponse(@Nonnull Response<ListTtPlayersQuery.Data> response) {
-            Log.d(TAG, "onResponse: Results: " + response.data().listTTPlayers().items().toString());
-            Log.d("Results", response.data().listTTPlayers().items().toString());
-        }
-
-        @Override
-        public void onFailure(@Nonnull ApolloException e) {
-            Log.d(TAG, "onFailure: " + e.toString());
-            Log.d("ERROR", e.toString());
-        }
-    };*/
 
     @Override
     public void onBackPressed() {
@@ -96,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
             Log.d(TAG, "onBackPressed: backstack has this many entries: " +
                     getSupportFragmentManager().getBackStackEntryCount());
             Log.d(TAG, "onBackPressed: Fewer than 2");
-//            fm.beginTransaction().replace(R.id.login_fragment_container, new LoginFragment())
-//                    .commit();
             finish();
         }
     }
@@ -134,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume: Start");
         super.onResume();
         setScreenSize();
     }
@@ -145,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     }
 
     private void setScreenSize() {
-        Log.d(TAG, "setScreenSize: Start");
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;

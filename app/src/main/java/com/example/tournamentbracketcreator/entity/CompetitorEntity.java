@@ -1,5 +1,6 @@
 package com.example.tournamentbracketcreator.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -9,9 +10,10 @@ import com.example.tournamentbracketcreator.model.Competitor;
 @Entity(tableName = "competitors")
 public class CompetitorEntity implements Competitor {
     @PrimaryKey
-    private int id;
-    private String name;
-    private String score;
+    @NonNull
+    public String id;
+    public String name;
+    public String score;
 
 
     @Override
@@ -19,7 +21,7 @@ public class CompetitorEntity implements Competitor {
         return 0;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -46,7 +48,7 @@ public class CompetitorEntity implements Competitor {
     }
 
     @Ignore
-    public CompetitorEntity(int id, String name, String score){
+    public CompetitorEntity(String id, String name, String score){
         this.id = id;
         this.name = name;
         this.score = score;

@@ -7,8 +7,8 @@ public class MatchData implements Serializable {
 //    private CompetitorData competitorOne;
 //    private CompetitorData competitorTwo;
 
-    private CompetitorData playerOne;
-    private CompetitorData playerTwo;
+    private PlayerData playerOne;
+    private PlayerData playerTwo;
     private int height;
     private long id;
 
@@ -21,27 +21,27 @@ public class MatchData implements Serializable {
     }
 
     //TODO update MatchData to take PlayerData as parameters
-    public MatchData(long id, CompetitorData playerOne, CompetitorData playerTwo) {
+    public MatchData(long id, PlayerData playerOne, PlayerData playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.id = id;
 
     }
 
-    public CompetitorData getCompetitorOne() {
+    public PlayerData getCompetitorOne() {
         return playerOne;
     }
 
     //TODO setCompetitorOne from poolRVData, by name
-    public void setCompetitorOne(CompetitorData playerOne) {
+    public void setCompetitorOne(PlayerData playerOne) {
         this.playerOne = playerOne;
     }
 
-    public CompetitorData getCompetitorTwo() {
+    public PlayerData getCompetitorTwo() {
         return playerTwo;
     }
     //TODO setCompetitorTwo from poolRVData, by name
-    public void setCompetitorTwo(CompetitorData playerTwo) {
+    public void setCompetitorTwo(PlayerData playerTwo) {
         this.playerTwo = playerTwo;
     }
 

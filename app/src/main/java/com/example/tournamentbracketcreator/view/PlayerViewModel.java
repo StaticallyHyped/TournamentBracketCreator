@@ -1,6 +1,8 @@
 package com.example.tournamentbracketcreator.view;
 
 import android.app.Application;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,6 +12,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.tournamentbracketcreator.application.BracketsApplication;
 import com.example.tournamentbracketcreator.application.DataRepository;
+import com.example.tournamentbracketcreator.db.AppDatabase;
+import com.example.tournamentbracketcreator.db.DatabaseInitializer;
 import com.example.tournamentbracketcreator.entity.PlayerEntity;
 import com.example.tournamentbracketcreator.entity.WinEntity;
 
@@ -18,32 +22,37 @@ import java.util.List;
 public class PlayerViewModel extends AndroidViewModel {
     public static final String TAG = "PlayerViewModel";
 
-    private final LiveData<PlayerEntity> mObservablePlayer;
+    public final LiveData<List<PlayerEntity>> mObservablePlayers;
     public ObservableField<PlayerEntity> player = new ObservableField<>();
-    private final int mPlayerId;
-    private final LiveData<List<WinEntity>> mObservableWins;
+    private AppDatabase mDb;
+   // private final int mPlayerId;
+   // private final LiveData<List<WinEntity>> mObservableWins;
 
-    public PlayerViewModel(@NonNull Application application, DataRepository repository,
-                           final int playerId){
+    public PlayerViewModel(@NonNull Application application){
         super(application);
-        mPlayerId = playerId;
-        mObservablePlayer = repository.loadPlayer(mPlayerId);
-        mObservableWins = repository.loadWins(mPlayerId);
+        Log.d(TAG, "PlayerViewModel: constructor, before createDb();");
+        createDb();
+        Log.d(TAG, "PlayerViewModel: constructor, after createDb();");
+        mObservablePlayers = mDb.playerDao().loadAllPlayers();
+        Log.d(TAG, "PlayerViewModel: constructor, after mObservePlayers init");
     }
 
-    //Expose the LiveData Wins query so the UI can observe it
-    public LiveData<List<WinEntity>> getWins(){
-        return mObservableWins;
+    public void createDb(){
+        Log.d(TAG, "createDb: starts");
+        mDb = AppDatabase.getDatabase(this.getApplication());
+        DatabaseInitializer.populateAsync(mDb);
     }
-    public LiveData<PlayerEntity> getObservablePlayer(){
-        return mObservablePlayer;
+    //Expose the LiveData Wins query so the UI can observe it
+
+    public LiveData<List<PlayerEntity>> getObservablePlayers(){
+        return mObservablePlayers;
     }
 
     public void setPlayer(PlayerEntity player) {
         this.player.set(player);
     }
 
-    public static class Factory extends ViewModelProvider.NewInstanceFactory {
+    /*public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
         private final Application mApplication;
@@ -61,5 +70,5 @@ public class PlayerViewModel extends AndroidViewModel {
             return (T) new PlayerViewModel(mApplication, mRepository, mPlayerId);
         }
 
-    }
+    }*/
 }

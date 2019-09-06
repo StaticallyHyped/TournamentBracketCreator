@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_toLeftOf="@id/update_score_button"
-                android:text="Next Round"
+                android:text="End Match"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 

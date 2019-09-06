@@ -8,6 +8,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -26,15 +29,20 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.example.tournamentbracketcreator.adapter.BracketsCellAdapter;
 import com.example.tournamentbracketcreator.adapter.BracketsSectionAdapter;
+import com.example.tournamentbracketcreator.db.AppDatabase;
+import com.example.tournamentbracketcreator.entity.PlayerEntity;
 import com.example.tournamentbracketcreator.model.ClientFactory;
 import com.example.tournamentbracketcreator.model.ColumnData;
 import com.example.tournamentbracketcreator.model.CompetitorData;
 import com.example.tournamentbracketcreator.model.Data;
 import com.example.tournamentbracketcreator.model.MatchData;
+import com.example.tournamentbracketcreator.model.PlayerData;
 import com.example.tournamentbracketcreator.model.RoundData;
 import com.example.tournamentbracketcreator.utility.BracketsUtility;
 import com.example.tournamentbracketcreator.view.BracketsViewModel;
 import com.example.tournamentbracketcreator.R;
+import com.example.tournamentbracketcreator.view.PlayerListViewModel;
+import com.example.tournamentbracketcreator.view.PlayerViewModel;
 import com.example.tournamentbracketcreator.view.WrapContentHtViewPager;
 
 import java.util.ArrayList;
@@ -55,11 +63,10 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
     private AWSAppSyncClient mAWSAppSyncClient;
     public static ArrayList<String[]> tournPool = Data.getTournPoolList();
     public CompetitorData match;
-    //private List<GetTtPlayerQuery> playersData = new ArrayList<>();
-    // private AppSyncQueryCall<GetPlayerByNameQuery.GetPlayerByName> queryCall;
-    //private List<GetPlayerByNameQuery.GetPlayerByName> playersNameData = new ArrayList<>();
     private List<GetTtPlayerQuery.GetTTPlayer> playersNameData = new ArrayList<>();
-
+    private PlayerViewModel mPlayerViewModel;
+    private AppDatabase mDb;
+    List<PlayerEntity> playerList;
 
     public static BracketsFragment newInstance() {
         return new BracketsFragment();
@@ -67,8 +74,13 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
 
     @Override
     public void onAttach(Context context) {
-        query();
+        Log.d(TAG, "onAttach: starts");
+        //TODO experiment with putting query(); later in the lifecycle
+       // query();
+        //subscribeUiPlayers();
         super.onAttach(context);
+
+        //subscribeUiPlayers();
     }
 
     @Override
@@ -80,28 +92,61 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
                 .context(getContext())
                 .awsConfiguration(new AWSConfiguration(getContext()))
                 .build();
-
+//        mPlayerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
+        mPlayerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
+        playerList = mPlayerViewModel.mObservablePlayers.getValue();
+        subscribeUiPlayers();
         return inflater.inflate(R.layout.fragment_brackets, container, false);
+    }
+
+    private void initPlayers(List<PlayerEntity> playerEntities){
+        setData(playerEntities);
+    }
+
+    private void subscribeUiPlayers(){
+        Log.d(TAG, "subscribeUiPlayers: starts");
+        mPlayerViewModel.mObservablePlayers.observe(this, new Observer<List<PlayerEntity>>() {
+            @Override
+            public void onChanged(List<PlayerEntity> playerEntities) {
+                Log.d(TAG, "onChanged: starts");
+                setData(playerEntities);
+                initViews();
+                initViewPagerAdapter();
+                showPlayersInUi(playerEntities);
+            }
+        });
+    }
+    private void showPlayersInUi(final @NonNull List<PlayerEntity> playerEntities){
+        Log.d(TAG, "showPlayersInUi: starts");
+        Log.d(TAG, "showPlayersInUi: playerEntities size: " + playerEntities.size());
+        StringBuilder sb = new StringBuilder();
+
+        for (PlayerEntity player : playerEntities){
+           sb.append(player.name);
+           sb.append(player.id);
+        }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d(TAG, "onActivityCreated: starts");
        // mViewModel = ViewModelProviders.of(this).get(BracketsViewModel.class);
     }
-    
+
+    //Runs in onClick method in BracketsCellAdapter
     public CompetitorData getPlayer(CompetitorData competitor){
         Log.d(TAG, "getPlayer: starts");
-        updateMatch(competitor);
+       // updateMatch(competitor);
         return competitor;
     }
 
     MatchData matchData5;
     ArrayList<MatchData> column2MatchesList = new ArrayList<>();
     ColumnData columnData2 = new ColumnData(column2MatchesList);
-    CompetitorData competitorNine = null;
+//    CompetitorData competitorNine = null;
 
-    public void updateMatch(CompetitorData competitor){
+   /* public void updateMatch(CompetitorData competitor){
         CompetitorData competitorTen = new CompetitorData(10, "Comp 10", "11");
 //        CompetitorData competitorNine = new CompetitorData(9, "Comp 9", "8");
          if (CompetitorData.getWinnersRoundTwoData().size() > 0){
@@ -109,9 +154,9 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
             competitorNine = CompetitorData.getWinnersRoundTwoData().get(0);
             matchData5 = new MatchData(10, competitorNine, competitorTen);
             Log.d(TAG, "updateMatch: competitorNine = " + CompetitorData.getWinnersRoundTwoData().get(0).getName());
-            /*column2MatchesList.add(matchData5);
+            *//*column2MatchesList.add(matchData5);
             column2MatchesList.add(matchData5);
-            sectionList.add(columnData2);*/
+            sectionList.add(columnData2);*//*
             setData();
              //onResume();
             sectionAdapter.notifyDataSetChanged();
@@ -124,18 +169,21 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
             sectionList.add(columnData2);
             sectionAdapter.notifyDataSetChanged();
         }
-    }
+    }*/
 
     @Override
     public void onResume() {
         Log.d(TAG, "onResume: starts");
         super.onResume();
-        setData();
-        initViews();
-        initViewPagerAdapter();
+       // setData();
+
+        //initPlayers(playerList);
+//        initViews();
+//        initViewPagerAdapter();
+
     }
 
-    public void query() {
+    /*public void query() {
         //Index 0 is the name, index 1 is the player id
         //Loop through array to get the values from index 0 and 1
         Log.d(TAG, "query: starts");
@@ -177,7 +225,7 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
                 public void onFailure(@Nonnull ApolloException e) {
                     Log.d(TAG, "onFailure: " + e);
                 }
-            };
+            };*/
 
     //TODO
     // GetTtPlayerQuery to get player data from DB, initialize
@@ -213,82 +261,109 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
         */
     }
 
-    public void setData() {
+    public void setData(final @NonNull List<PlayerEntity> playerEntities) {
         Log.d(TAG, "setData: starts");
         sectionList = new ArrayList<>();
         ArrayList<MatchData> column1MatchesList = new ArrayList<>();
-//        ArrayList<MatchData> column2MatchesList = new ArrayList<>();
+        ArrayList<MatchData> column2MatchesList = new ArrayList<>();
         ArrayList<MatchData> column3MatchesList = new ArrayList<>();
         //Retrieve CompetitorData at their given index and set score to 0
 
-        CompetitorData competitorOne = null;
+        /*CompetitorData competitorOne = null;
         CompetitorData competitorTwo = null;
         CompetitorData competitorThree = null;
         CompetitorData competitorFour = null;
         CompetitorData competitorFive = null;
         CompetitorData competitorSix = null;
         CompetitorData competitorSeven = null;
-        CompetitorData competitorEight = null;
+        CompetitorData competitorEight = null;*/
+
+        //for (PlayerEntity playerEntity : pl)
         MatchData matchData1 = null;
         MatchData matchData2 = null;
         MatchData matchData3 = null;
         MatchData matchData4 = null;
+        PlayerData playerOne = null;
+        PlayerData playerTwo = null;
+        PlayerData playerThree = null;
+        PlayerData playerFour = null;
+        PlayerData playerFive = null;
+        PlayerData playerSix = null;
+        PlayerData playerSeven = null;
+        PlayerData playerEight = null;
 
-        for (int e = 0; e < playersNameData.size(); e++) {
+
+//        for (int e = 0; e < playersNameData.size(); e++) {
+        for (int e = 0; e < playerEntities.size(); e++) {
             switch (e) {
                 case (0):
                     Log.d(TAG, "setData: case 0");
-                    competitorOne = new CompetitorData(1 ,playersNameData.get(e).name(), "0");
+//                    playerOne = new PlayerData(mDb.playerDao().loadPlayer());
+                    if (playerEntities.get(e).getId() != null){
+                        Log.d(TAG, "setData: not null");
+                        playerOne = new PlayerData(playerEntities.get(e).getId(),
+                                playerEntities.get(e).getName());
+                    } else {
+                        Log.d(TAG, "setData: null");
+                    }
+                    
                     break;
                 case (1):
                     Log.d(TAG, "setData: case 1");
-                    competitorTwo = new CompetitorData(2, playersNameData.get(e).name(), "0");
-                    if (competitorOne != null) {
-                        matchData1 = new MatchData(1, competitorOne, competitorTwo);
+                    playerTwo = new PlayerData(playerEntities.get(e).getId(),
+                            playerEntities.get(e).getName());
+                    if (playerOne != null) {
+                        matchData1 = new MatchData(1, playerOne, playerTwo);
                     } else {
-                        matchData1 = new MatchData(1, new CompetitorData(1, "Uh Oh, Something Went Wrong", "0"),
-                                competitorTwo);
+                        matchData1 = new MatchData(1, new PlayerData("1", "Uh Oh, Something Went Wrong"),
+                                playerTwo);
                     }
                     break;
                 case (2):
                     Log.d(TAG, "setData: case 2");
-                    competitorThree = new CompetitorData(3, playersNameData.get(e).name(), "0");
+                    playerThree = new PlayerData(playerEntities.get(e).getId(),
+                        playerEntities.get(e).getName());
                     break;
                 case (3):
                     Log.d(TAG, "setData: case 3");
-                    competitorFour = new CompetitorData(4, playersNameData.get(e).name(), "0");
-                    if (competitorFour != null) {
-                        matchData2 = new MatchData(2, competitorThree, competitorFour);
+                    playerFour = new PlayerData(playerEntities.get(e).getId(),
+                            playerEntities.get(e).getName());
+                    if (playerFour != null) {
+                        matchData2 = new MatchData(2, playerThree, playerFour);
                     } else {
-                        matchData2 = new MatchData(2, new CompetitorData(3, "Uh oh, something went wrong", "0"),
-                                competitorFour);
+                        matchData2 = new MatchData(2, new PlayerData("3", "Uh oh, something went wrong"),
+                                playerFour);
                     }
                     break;
                 case (4):
                     Log.d(TAG, "setData: case 4");
-                    competitorFive = new CompetitorData(5, playersNameData.get(e).name(), "0");
+                    playerFive = new PlayerData(playerEntities.get(e).getId(),
+                            playerEntities.get(e).getName());
                     break;
                 case (5):
                     Log.d(TAG, "setData: case 5");
-                    competitorSix = new CompetitorData(6, playersNameData.get(e).name(), "0");
-                    if (competitorFive != null) {
-                        matchData3 = new MatchData(3, competitorFive, competitorSix);
+                    playerSix = new PlayerData(playerEntities.get(e).getId(),
+                            playerEntities.get(e).getName());
+                    if (playerFive != null) {
+                        matchData3 = new MatchData(3, playerFive, playerSix);
                     } else {
-                        matchData3 = new MatchData(3, new CompetitorData(5, "Uh oh, something went wrong", "0"),
-                                competitorSix);
+                        matchData3 = new MatchData(3, new PlayerData("5", "Uh oh, something went wrong"),
+                                playerSix);
                     }
                     break;
                 case (6):
                     Log.d(TAG, "setData: case 6");
-                    competitorSeven = new CompetitorData(7, playersNameData.get(e).name(), "0");
+                    playerSeven = new PlayerData(playerEntities.get(e).getId(),
+                            playerEntities.get(e).getName());
                     break;
                 case (7):
-                    competitorEight = new CompetitorData(8, playersNameData.get(e).name(), "0");
-                    if (competitorSeven != null) {
-                        matchData4 = new MatchData(4, competitorSeven, competitorEight);
+                    playerEight = new PlayerData(playerEntities.get(e).getId(),
+                            playerEntities.get(e).getName());
+                    if (playerSeven != null) {
+                        matchData4 = new MatchData(4, playerSeven, playerEight);
                     } else {
-                        matchData3 = new MatchData(3, new CompetitorData(7, "Uh oh, something went wrong", "0"),
-                                competitorEight);
+                        matchData3 = new MatchData(3, new PlayerData("7", "Uh oh, something went wrong"),
+                                playerEight);
                     }
                     break;
                 default:
@@ -319,22 +394,21 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
         ColumnData column1Data = new ColumnData(column1MatchesList);
         sectionList.add(column1Data);
         //END COLUMN 1 DATA, START COLUMN TWO - to be generated programmatically based on wins
-        if (competitorNine == null){
-            competitorNine = new CompetitorData(9, "TBD", "0");
-        }
-        Log.d(TAG, "setData: competitorNine: " + competitorNine.getName());
-        CompetitorData competitorTen = new CompetitorData(10,"TBD", "0");
-        CompetitorData competitorEleven = new CompetitorData(11, "TBD", "0");
-        CompetitorData competitorTwelve = new CompetitorData(12,"TBD", "0");
 
-        MatchData matchData5 = new MatchData(5, competitorNine, competitorTen);
-        MatchData matchData6 = new MatchData(6, competitorEleven, competitorTwelve);
+        PlayerData playerNine = new PlayerData("9", "TBD");
+        Log.d(TAG, "setData: competitorNine: " + playerNine.getName());
+        PlayerData playerTen = new PlayerData("10","TBD");
+        PlayerData playerEleven = new PlayerData("11", "TBD");
+        PlayerData playerTwelve = new PlayerData("12","TBD");
+
+        MatchData matchData5 = new MatchData(5, playerNine, playerTen);
+        MatchData matchData6 = new MatchData(6, playerEleven, playerTwelve);
         column2MatchesList.add(matchData5);
         column2MatchesList.add(matchData6);
         columnData2 = new ColumnData(column2MatchesList);
         sectionList.add(columnData2);
-        CompetitorData competitorThirteen = new CompetitorData(13,"TBD", "TBD");
-        CompetitorData competitorFourteen = new CompetitorData(14,"TBD", "TBD");
+        PlayerData competitorThirteen = new PlayerData("13","TBD");
+        PlayerData competitorFourteen = new PlayerData("14","TBD");
         MatchData matchData7 = new MatchData(7, competitorThirteen, competitorFourteen);
         column3MatchesList.add(matchData7);
         //END COLUMN 2 DATA, START COLUMN 3
@@ -345,6 +419,7 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
 
     private void initViewPagerAdapter() {
         Log.d(TAG, "initViewPagerAdapter: starts");
+
         sectionAdapter = new BracketsSectionAdapter(getChildFragmentManager(), sectionList);
         viewPager.setOffscreenPageLimit(10);
         viewPager.setAdapter(sectionAdapter);
@@ -353,6 +428,7 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
         viewPager.setHorizontalFadingEdgeEnabled(true);
         viewPager.setFadingEdgeLength(50);
         viewPager.addOnPageChangeListener(this);
+        Log.d(TAG, "initViewPagerAdapter: exits");
     }
 
     private void initViews() {

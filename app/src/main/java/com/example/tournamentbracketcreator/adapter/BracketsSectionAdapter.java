@@ -1,6 +1,7 @@
 package com.example.tournamentbracketcreator.adapter;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,6 +13,7 @@ import com.example.tournamentbracketcreator.model.ColumnData;
 import java.util.ArrayList;
 
 public class BracketsSectionAdapter extends FragmentStatePagerAdapter {
+    public static final String TAG = "BracketsSectionAdapter";
 
     private ArrayList<ColumnData> sectionList;
 
@@ -22,6 +24,7 @@ public class BracketsSectionAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        Log.d(TAG, "getItem: starts");
         Bundle bundle = new Bundle();
         bundle.putSerializable("column_data", this.sectionList.get(position));
         BracketColumnFragment fragment = new BracketColumnFragment();
@@ -39,6 +42,10 @@ public class BracketsSectionAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return this.sectionList.size();
+
+
+            return this.sectionList.size();
+
+
     }
 }

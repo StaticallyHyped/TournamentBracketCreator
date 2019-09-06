@@ -111,7 +111,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
     @Override
     public long getItemId(int position){
-        return mPlayerList.get(position).getId();
+        return Long.parseLong(mPlayerList.get(position).getId());
     }
 
     static class PlayerViewHolder extends RecyclerView.ViewHolder {

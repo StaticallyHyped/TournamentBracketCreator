@@ -11,10 +11,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.example.tournamentbracketcreator.R;
 
 public class TournamentBracketActivity extends AppCompatActivity {
+    public static final String TAG = "TournamentBracketActivity";
     private BracketsFragment bracketFragment;
 
     @Override
@@ -28,6 +30,7 @@ public class TournamentBracketActivity extends AppCompatActivity {
 
     }
     private void initBracketsFragment(){
+        Log.d(TAG, "initBracketsFragment: starts");
         bracketFragment = new BracketsFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -43,6 +46,7 @@ public class TournamentBracketActivity extends AppCompatActivity {
     }
 
     private void setScreenSize(){
+        Log.d(TAG, "setScreenSize: starts");
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;

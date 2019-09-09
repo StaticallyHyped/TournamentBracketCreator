@@ -15,10 +15,12 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.tournamentbracketcreator.dao.CompetitorDao;
+import com.example.tournamentbracketcreator.dao.MatchDao;
 import com.example.tournamentbracketcreator.db.AppExecutors;
 import com.example.tournamentbracketcreator.dao.PlayerDao;
 import com.example.tournamentbracketcreator.dao.WinDao;
 import com.example.tournamentbracketcreator.entity.CompetitorEntity;
+import com.example.tournamentbracketcreator.entity.MatchEntity;
 import com.example.tournamentbracketcreator.entity.PlayerEntity;
 import com.example.tournamentbracketcreator.entity.PlayerFtsEntity;
 import com.example.tournamentbracketcreator.entity.WinEntity;
@@ -26,7 +28,8 @@ import com.example.tournamentbracketcreator.utility.DateConverter;
 
 import java.util.List;
 
-@Database(entities = {PlayerEntity.class, PlayerFtsEntity.class, WinEntity.class, CompetitorEntity.class}, version = 1)
+@Database(entities = {PlayerEntity.class, PlayerFtsEntity.class,
+        WinEntity.class, CompetitorEntity.class, MatchEntity.class}, version = 1)
 //, exportSchema = false
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
@@ -36,11 +39,12 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
 
     @VisibleForTesting
-    public static final String DATABASE_NAME = "tournament-db";
+    public static final String DATABASE_NAME = "tournament-db-test1_1";
 
     public abstract PlayerDao playerDao();
     public abstract WinDao winDao();
     public abstract CompetitorDao competitorDao();
+    public abstract MatchDao matchDao();
 
 
     private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
@@ -50,8 +54,10 @@ public abstract class AppDatabase extends RoomDatabase {
             Log.d(TAG, "getDatabase: INSTANCE == null");
             INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME)
-                            // To simplify the codelab, allow queries on the main thread.
+                            // allow queries on the main thread.
                             // Don't do this on a real app! See PersistenceBasicSample for an example.
+                            //TODO disallow queries on Main thread
+                            .fallbackToDestructiveMigration()
                             .allowMainThreadQueries()
                             .build();
         }
@@ -62,56 +68,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public static void destroyInstance() {
         INSTANCE = null;
     }
-
-    /*public static AppDatabase getInstance(Context context, final AppExecutors executors) {
-        Log.d(TAG, "getInstance: starts");
-        if (sInstance == null) {
-            Log.d(TAG, "getInstance: instance is null");
-            synchronized (AppDatabase.class) {
-                if (sInstance == null) {
-                    Log.d(TAG, "getInstance: instance is null, sync");
-                    sInstance = buildDatabase(context.getApplicationContext(), executors);
-                    sInstance.updateDatabaseCreated(context.getApplicationContext());
-                }
-            }
-        }
-        return sInstance;
-    }*/
-    /**
-     * Build the database. {@link Builder#build()} only sets up the database configuration and
-     * creates a new instance of the database.
-     * The SQLite database is only created when it's accessed for the first time.
-     */
-    /*private static AppDatabase buildDatabase(final Context appContext,
-                                             final AppExecutors executors) {
-        Log.d(TAG, "buildDatabase: starts");
-        return Room.databaseBuilder(appContext, AppDatabase.class, DATABASE_NAME)
-                .addCallback(new Callback() {
-                    @Override
-                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                        super.onCreate(db);
-                        Log.d(TAG, "onCreate: adding callback");
-                        executors.diskIO().execute(() -> {
-                            Log.d(TAG, "onCreate: in addCallback, in lambda");
-                            // Add a delay to simulate a long-running operation
-                            //addDelay();
-                            // Generate the data for pre-population
-                            AppDatabase database = AppDatabase.getInstance(appContext, executors);
-                            List<PlayerEntity> players = DataGenerator.generatePlayers();
-                            List<WinEntity> wins = DataGenerator.generateWinsForPlayers(players);
-                            List<CompetitorEntity> competitors = DataGenerator.generateCompetitors();
-
-                            insertData(database, players, wins, competitors);
-                            // notify that the database was created and it's ready to be used
-                            database.setDatabaseCreated();
-                            Log.d(TAG, "onCreate: database created");
-                        });
-                        Log.d(TAG, "buildDatabase: run, in addCallback, outside lambda");
-                    }
-                })
-                .addMigrations(MIGRATION_1_2)
-                .build();
-    }*/
 
     /**
      * Check whether the database already exists and expose it via {@link #getDatabaseCreated()}

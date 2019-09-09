@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.tournamentbracketcreator.entity.MatchEntity;
 import com.example.tournamentbracketcreator.entity.PlayerEntity;
 import com.example.tournamentbracketcreator.model.Data;
 
@@ -28,6 +29,19 @@ public class DatabaseInitializer {
         populateFromData(db);
     }
 
+    private static MatchEntity addMatch(final AppDatabase db, final long id,
+                                        final String playerOneId, final String playerTwoId,
+                                        final String playerOneScore, final String playerTwoScore){
+        MatchEntity match = new MatchEntity();
+        match.id = id;
+        match.playerOneId = playerOneId;
+        match.playerOneScore = playerOneScore;
+        match.playerTwoId = playerTwoId;
+        match.playerTwoScore = playerTwoScore;
+        db.matchDao().insertMatch(match);
+        return match;
+    }
+
     private static PlayerEntity addPlayer(final AppDatabase db,
                                           final String id, final String name){
         Log.d(TAG, "addPlayer: starts");
@@ -39,32 +53,73 @@ public class DatabaseInitializer {
     }
 
     private static void populateFromData(AppDatabase db) {
-        Log.d(TAG, "populateFromData: starts");
+
         db.playerDao().deleteAll();
-        Log.d(TAG, "populateFromData: tournPool size: " + tournPool.size());
-//        try {
-            for (String[] i : tournPool) {
-                String name = i[0];
-                String id = i[1];
+        db.matchDao().deleteAll();
 
-                PlayerEntity player1 = addPlayer(db, id, name);
-//                Thread.sleep(DELAY_MILLIS);
-                PlayerEntity player2 = addPlayer(db, id, name);
-//                Thread.sleep(DELAY_MILLIS);
-                PlayerEntity player3 = addPlayer(db, id, name);
-//                Thread.sleep(DELAY_MILLIS);
-                PlayerEntity player4 = addPlayer(db, id, name);
-//                Thread.sleep(DELAY_MILLIS);
-                PlayerEntity player5 = addPlayer(db, id, name);
-//                Thread.sleep(DELAY_MILLIS);
-                PlayerEntity player6 = addPlayer(db, id, name);
-                PlayerEntity player7 = addPlayer(db, id, name);
-                PlayerEntity player8 = addPlayer(db, id, name);
+        PlayerEntity player1 = null;
+        PlayerEntity player2 = null;
+        PlayerEntity player3 = null;
+        PlayerEntity player4 = null;
+        PlayerEntity player5 = null;
+        PlayerEntity player6 = null;
+        PlayerEntity player7 = null;
+        PlayerEntity player8 = null;
 
+
+        // This loops through the ArrayList tournPool
+        for (int e = 0; e < tournPool.size(); e++){
+            Log.d(TAG, "populateFromData: tournPool size: " + tournPool.size());
+            // create a String[] object then loop through the String[] to get id[1] and name[0]
+            // matches are created as players are added
+            // the case blocks prevent matches from being created if no/insufficient players are present
+            
+            
+            switch (e){
+                case (0):
+                    String[] p1 = tournPool.get(e);
+                    player1 = addPlayer(db, p1[1], p1[0]);
+                    Log.d(TAG, "populateFromData: p1 added");
+                    break;
+                case (1):
+                    String[] p2 = tournPool.get(e);
+                    player2 = addPlayer(db, p2[1], p2[0]);
+                    MatchEntity match1 = addMatch(db, 1 ,player1.getId(), player2.getId(), "0", "0" );
+                    Log.d(TAG, "populateFromData: p2 added");
+                    break;
+                case (2):
+                    String[] p3 = tournPool.get(e);
+                    player3 = addPlayer(db, p3[1], p3[0]);
+                    Log.d(TAG, "populateFromData: p3 added");
+                    break;
+                case (3):
+                    String[] p4 = tournPool.get(e);
+                    player4 = addPlayer(db, p4[1], p4[0]);
+                    MatchEntity match2 = addMatch(db, 2 ,player3.getId(), player4.getId(), "0", "0" );
+                    Log.d(TAG, "populateFromData: p4 added");
+                    break;
+                case (4):
+                    String[] p5 = tournPool.get(e);
+                    player5 = addPlayer(db, p5[1], p5[0]);
+                    Log.d(TAG, "populateFromData: p5 added");
+                    break;
+                case (5):
+                    String[] p6 = tournPool.get(e);
+                    player6 = addPlayer(db, p6[1], p6[0]);
+                    MatchEntity match3 = addMatch(db, 3 ,player5.getId(), player6.getId(), "0", "0" );
+                    break;
+                case (6):
+                    String[] p7 = tournPool.get(e);
+                    player7 = addPlayer(db, p7[1], p7[0]);
+                    break;
+                case (7):
+                    String[] p8 = tournPool.get(e);
+                    player8 = addPlayer(db, p8[1], p8[0]);
+                    MatchEntity match4 = addMatch(db, 4 ,player7.getId(), player8.getId(), "0", "0" );
+                    break;
             }
-
-
-    }
+        }
+  }
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>{
 
@@ -73,7 +128,6 @@ public class DatabaseInitializer {
             Log.d(TAG, "PopulateDbAsync: ");
             mDb = db;
         }
-
 
         @Override
         protected Void doInBackground(Void... voids) {

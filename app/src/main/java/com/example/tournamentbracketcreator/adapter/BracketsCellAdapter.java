@@ -1,5 +1,6 @@
 package com.example.tournamentbracketcreator.adapter;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -11,10 +12,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tournamentbracketcreator.R;
+import com.example.tournamentbracketcreator.db.AppDatabase;
+import com.example.tournamentbracketcreator.db.DatabaseInitializer;
+import com.example.tournamentbracketcreator.entity.MatchEntity;
 import com.example.tournamentbracketcreator.fragment.BracketColumnFragment;
 import com.example.tournamentbracketcreator.fragment.BracketsFragment;
 import com.example.tournamentbracketcreator.model.CompetitorData;
@@ -23,6 +29,7 @@ import com.example.tournamentbracketcreator.model.Player;
 import com.example.tournamentbracketcreator.model.PlayerData;
 import com.example.tournamentbracketcreator.ui.ArrowClickCallback;
 import com.example.tournamentbracketcreator.ui.PlayerClickCallback;
+import com.example.tournamentbracketcreator.view.PlayerViewModel;
 import com.example.tournamentbracketcreator.viewholder.BracketsCellViewHolder;
 
 import java.util.ArrayList;
@@ -36,11 +43,13 @@ public class BracketsCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private BracketColumnFragment fragment;
     private Context context;
     private ArrayList<MatchData> playerData;
-    List<? extends MatchData> mPlayerList;
-    private ArrayList<MatchData> updateMatch;
+    public LiveData<List<MatchEntity>> matchList;
+    public ArrayList<MatchData> updateMatch;
     private boolean handler;
-//    public static CompetitorData competitor = null;
-//    public OnUpdateMatchClickListener mListener;
+    AppDatabase mDb;
+
+
+
     public BracketsFragment bracketsFragment = new BracketsFragment();
 
     /*public interface OnUpdateMatchClickListener{
@@ -68,41 +77,7 @@ public class BracketsCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new BracketsCellViewHolder(view);
     }
 
-    public void setPlayerMatches(final List<? extends MatchData> playerList){
-        if (mPlayerList == null){
-            mPlayerList = playerList;
-            notifyItemRangeInserted(0, playerList.size());
-        } else {
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return mPlayerList.size();
-                }
 
-                @Override
-                public int getNewListSize() {
-                    return playerList.size();
-                }
-
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    return mPlayerList.get(oldItemPosition).getId() == playerList
-                            .get(newItemPosition).getId();
-                }
-
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    MatchData newMatch = playerList.get(newItemPosition);
-                    MatchData oldMatch = mPlayerList.get(oldItemPosition);
-                    return newMatch.getId() == oldMatch.getId()
-                            && Objects.equals(newMatch.getCompetitorOne(), oldMatch.getCompetitorOne());
-
-                }
-            });
-            mPlayerList = playerList;
-            result.dispatchUpdatesTo(this);
-        }
-    }
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: starts");
@@ -114,36 +89,15 @@ public class BracketsCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String teamOneScore = finalViewHolder.getTeamOneScore().getText().toString();
             String teamOneName = finalViewHolder.getTeamOneName().getText().toString();
 
-            //String teamTwoScore = finalViewHolder.getTeamTwoScore().getText().toString();
-            //Used in the onClick method
-//            final CompetitorData competitor = new CompetitorData(10, teamOneName,
-//                    teamOneScore);
-
             View.OnClickListener buttonListener = new View.OnClickListener() {
-               
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "onClick: Arrow clicked");
-                    /*if (mArrowClickCallback != null){
-                        Log.d(TAG, "onClick: not null");
-//                        mArrowClickCallback.onArrowClick(v);
-                    }*/
-                    Log.d(TAG, "onClick: added competitor");
-//                    CompetitorData.winnersRoundTwoData.add(competitor);
-//                    bracketsFragment.getPlayer(competitor);
+                    Log.d(TAG, "onClick: matchList: " + matchList.getValue());
 
                 }
             };
             viewHolder.updateScoreButton.setOnClickListener(buttonListener);
-           /*
-                    // Get the winner and loser of each match, including name and score
-                    // Update each of the player's records in a mutate/cache
-                    // Create a new CompetitorData object for each column, player
-                    // Put the winning player into a MatchData object, and the losing player
-                    // into a losing player MatchData object - must be one at a time. Set the new object's second
-                    // CompetitorData object to a null, or TBD
-                    // Must pass data to BracketsFragment (or BracketColumnFragment) with on-click
-            */
+
         }
     }
     /*public static PlayerData sendMatchData(){
@@ -159,11 +113,11 @@ public class BracketsCellAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 .getCompetitorOne().getName());
         viewHolder.getTeamTwoName().setText(playerData.get(position)
                 .getCompetitorTwo().getName());
-       /* viewHolder.getTeamOneScore().setText(playerData.get(position)
+        /*viewHolder.getTeamOneScore().setText(playerData.get(position)
                 .getCompetitorOne().getScore());*/
         viewHolder.getTeamOneScore().setText("0");
-        /*viewHolder.getTeamTwoScore().setText(playerData.get(position)
-                .getCompetitorTwo().getScore());*/
+//        viewHolder.getTeamTwoScore().setText(playerData.get(position)
+//                .getCompetitorTwo().getScore());
         viewHolder.getTeamTwoScore().setText("0");
     }
 

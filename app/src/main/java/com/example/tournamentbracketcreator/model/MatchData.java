@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 public class MatchData implements Serializable {
 
-//    private CompetitorData competitorOne;
-//    private CompetitorData competitorTwo;
-
     private PlayerData playerOne;
     private PlayerData playerTwo;
     private int height;
@@ -20,7 +17,6 @@ public class MatchData implements Serializable {
         this.height = height;
     }
 
-    //TODO update MatchData to take PlayerData as parameters
     public MatchData(long id, PlayerData playerOne, PlayerData playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
@@ -32,7 +28,6 @@ public class MatchData implements Serializable {
         return playerOne;
     }
 
-    //TODO setCompetitorOne from poolRVData, by name
     public void setCompetitorOne(PlayerData playerOne) {
         this.playerOne = playerOne;
     }
@@ -40,7 +35,7 @@ public class MatchData implements Serializable {
     public PlayerData getCompetitorTwo() {
         return playerTwo;
     }
-    //TODO setCompetitorTwo from poolRVData, by name
+
     public void setCompetitorTwo(PlayerData playerTwo) {
         this.playerTwo = playerTwo;
     }

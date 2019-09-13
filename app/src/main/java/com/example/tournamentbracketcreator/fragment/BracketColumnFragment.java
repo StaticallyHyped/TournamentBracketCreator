@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.tournamentbracketcreator.adapter.BracketsCellAdapter;
 import com.example.tournamentbracketcreator.model.ColumnData;
@@ -39,6 +40,7 @@ public class BracketColumnFragment extends Fragment {
     private ArrayList<MatchData> playerData;
     private RecyclerView mBracketRV;
     private BracketsCellAdapter adapter;
+    ImageButton arrowButton;
 
     public static BracketColumnFragment newInstance() {
         return new BracketColumnFragment();
@@ -50,6 +52,10 @@ public class BracketColumnFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+       /* ArrowClickCallback listener = (v, position) -> {
+            Log.d(TAG, "onViewCreated: clicked!");
+        };*/
+
         return inflater.inflate(R.layout.fragment_bracket_columns, container, false);
     }
 
@@ -57,15 +63,16 @@ public class BracketColumnFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "onViewCreated: starts");
+        arrowButton = getView().findViewById(R.id.update_score_button);
         initViews();
         getExtras();
         initAdapter();
+
     }
     public void initViews(){
         mBracketRV = getView().findViewById(R.id.bracket_col_pairingRV);
 
     }
-
 
     public ArrayList<MatchData> getColumnList(){
         return playerData;
@@ -79,12 +86,10 @@ public class BracketColumnFragment extends Fragment {
 
     private void getExtras(){
         if (getArguments() != null){
-            Log.d(TAG, "getExtras: != null");
             playerData = new ArrayList<>();
             columnData = (ColumnData) getArguments().getSerializable("column_data");
             sectionNumber = getArguments().getInt("section_number");
             previousBracketSize = getArguments().getInt("previous_section_size");
-            Log.d(TAG, "getExtras: columnData size: " + columnData.getMatches().size());
             playerData.addAll(columnData.getMatches());
             setInitialHeightForPlayerData();
         }
@@ -128,7 +133,10 @@ public class BracketColumnFragment extends Fragment {
     @SuppressLint("WrongConstant")
     public void initAdapter() {
         Log.d(TAG, "initAdapter: starts");
-        adapter = new BracketsCellAdapter(this, getContext(), playerData);
+        ArrowClickCallback listener = (View v, int position) -> {
+            Log.d(TAG, "onViewCreated: clicked!");
+        };
+        adapter = new BracketsCellAdapter(this, getContext(), playerData, listener);
         if (mBracketRV != null){
             mBracketRV.setHasFixedSize(true);
             mBracketRV.setNestedScrollingEnabled(false);
@@ -149,16 +157,4 @@ public class BracketColumnFragment extends Fragment {
         return previousBracketSize;
     }
 
-    /*@Override
-    public void onArrowClick(CompetitorData competitorData) {
-        Log.d(TAG, "onArrowClick: clicked");
-        ArrowClickCallback listener = (BracketsCellAdapter
-                .ArrowClickCallback) getTargetFragment();
-        if (listener != null){
-            Log.d(TAG, "onArrowClick: listener not null");
-            listener.onArrowClick(competitorData);
-        }
-
-        adapter.notifyDataSetChanged();
-    }*/
 }

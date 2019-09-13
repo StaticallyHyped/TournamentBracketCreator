@@ -34,9 +34,7 @@ public class PlayerViewModel extends AndroidViewModel {
         createDb();
         Log.d(TAG, "PlayerViewModel: constructor, after createDb();");
         mObservablePlayers = mDb.playerDao().loadAllPlayers();
-
         mObservableMatches = mDb.matchDao().loadAllMatches();
-       // Log.d(TAG, "PlayerViewModel: mObsPlayers size: " + mObservablePlayers.getValue().size());
     }
 
     public void createDb(){
@@ -49,9 +47,6 @@ public class PlayerViewModel extends AndroidViewModel {
     public LiveData<List<PlayerEntity>> getObservablePlayers(){
         return mObservablePlayers;
     }
-
-
-
     public void setPlayer(PlayerEntity player) {
         this.player.set(player);
     }

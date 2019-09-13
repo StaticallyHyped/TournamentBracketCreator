@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,27 +14,35 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tournamentbracketcreator.R;
+import com.example.tournamentbracketcreator.adapter.BracketsCellAdapter;
 import com.example.tournamentbracketcreator.animation.SlideAnimation;
+import com.example.tournamentbracketcreator.ui.ArrowClickCallback;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class BracketsCellViewHolder extends RecyclerView.ViewHolder {
+public class BracketsCellViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     public static final String TAG = "BracketsCellViewHolder";
     private TextView teamOneName, teamTwoName;
     private TextInputEditText teamOneScore, teamTwoScore;
     private Animation animation;
     public ImageButton updateScoreButton;
-    private RelativeLayout root;
+    public RelativeLayout root;
+    private ArrowClickCallback mListener;
 
-    public BracketsCellViewHolder(@NonNull View itemView) {
+    public BracketsCellViewHolder(View itemView, ArrowClickCallback listener) {
         super(itemView);
+        Log.d(TAG, "BracketsCellViewHolder: starts");
         teamOneName = itemView.findViewById(R.id.teamone_name);
         teamTwoName = itemView.findViewById(R.id.teamtwo_name);
         teamOneScore = itemView.findViewById(R.id.teamone_score);
         teamTwoScore = itemView.findViewById(R.id.teamtwo_score);
+        mListener = listener;
+        //update to make the button listen, not the whole view
         updateScoreButton = itemView.findViewById(R.id.update_score_button);
         root = itemView.findViewById(R.id.layout_cellbracket_RL);
+        Log.d(TAG, "BracketsCellViewHolder: scoreButton id: " + updateScoreButton.getId());
+        updateScoreButton.setOnClickListener(this);
+        Log.d(TAG, "BracketsCellViewHolder: setOnClickListener");
     }
-
 
     public void setAnimation(int height){
         animation = new SlideAnimation(root, root.getHeight(), height);
@@ -64,4 +73,15 @@ public class BracketsCellViewHolder extends RecyclerView.ViewHolder {
         return updateScoreButton;
     }
 
+    @Override
+    public void onClick(View v) {
+        Log.d(TAG, "onClick: before onClick");
+        Log.d(TAG, "onClick: button id: " + updateScoreButton.getId());
+        if (mListener == null){
+            Log.d(TAG, "onClick: mListener is null");
+        }
+        Log.d(TAG, "onClick: getAdapterPosition: " + getAdapterPosition());
+        Log.d(TAG, "onClick: view id: " + v.getId());
+        mListener.onArrowClick(v, getAdapterPosition());
+    }
 }

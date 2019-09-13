@@ -42,10 +42,7 @@ public class BracketsSectionAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-
-
-            return this.sectionList.size();
-
+        return this.sectionList.size();
 
     }
 }

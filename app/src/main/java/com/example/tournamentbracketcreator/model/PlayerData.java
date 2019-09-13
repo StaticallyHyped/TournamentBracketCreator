@@ -1,5 +1,7 @@
 package com.example.tournamentbracketcreator.model;
 
+import com.example.tournamentbracketcreator.entity.PlayerEntity;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -17,9 +19,9 @@ public class PlayerData implements Serializable {
 
     }
 
-    public static ArrayList<PlayerData> winnersRoundTwoData = new ArrayList<>();
+    public static ArrayList<PlayerEntity> winnersRoundTwoData = new ArrayList<>();
 
-    public static ArrayList<PlayerData> getWinnersRoundTwoData() {
+    public static ArrayList<PlayerEntity> getWinnersRoundTwoData() {
         return winnersRoundTwoData;
     }
 

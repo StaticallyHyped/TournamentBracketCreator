@@ -4,11 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.example.tournamentbracketcreator.model.Match;
-import com.example.tournamentbracketcreator.model.PlayerData;
 
 @Entity(tableName = "matches", foreignKeys = {
         @ForeignKey(entity = PlayerEntity.class, parentColumns = "id",
@@ -43,12 +41,12 @@ public class MatchEntity implements Match {
     }
 
     @Override
-    public PlayerData getPlayerOne() {
+    public PlayerEntity getPlayerOne() {
         return null;
     }
 
     @Override
-    public PlayerData getPlayerTwo() {
+    public PlayerEntity getPlayerTwo() {
         return null;
     }
 

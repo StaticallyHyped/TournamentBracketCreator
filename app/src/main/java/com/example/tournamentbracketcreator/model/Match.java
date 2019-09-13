@@ -1,7 +1,9 @@
 package com.example.tournamentbracketcreator.model;
 
+import com.example.tournamentbracketcreator.entity.PlayerEntity;
+
 public interface Match {
     int getId();
-    PlayerData getPlayerOne();
-    PlayerData getPlayerTwo();
+    PlayerEntity getPlayerOne();
+    PlayerEntity getPlayerTwo();
 }

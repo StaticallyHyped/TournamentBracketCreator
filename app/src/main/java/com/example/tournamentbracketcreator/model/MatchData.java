@@ -1,11 +1,13 @@
 package com.example.tournamentbracketcreator.model;
 
+import com.example.tournamentbracketcreator.entity.PlayerEntity;
+
 import java.io.Serializable;
 
 public class MatchData implements Serializable {
 
-    private PlayerData playerOne;
-    private PlayerData playerTwo;
+    private PlayerEntity playerOne;
+    private PlayerEntity playerTwo;
     private int height;
     private long id;
 
@@ -17,26 +19,26 @@ public class MatchData implements Serializable {
         this.height = height;
     }
 
-    public MatchData(long id, PlayerData playerOne, PlayerData playerTwo) {
+    public MatchData(long id, PlayerEntity playerOne, PlayerEntity playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.id = id;
 
     }
 
-    public PlayerData getCompetitorOne() {
+    public PlayerEntity getCompetitorOne() {
         return playerOne;
     }
 
-    public void setCompetitorOne(PlayerData playerOne) {
+    public void setCompetitorOne(PlayerEntity playerOne) {
         this.playerOne = playerOne;
     }
 
-    public PlayerData getCompetitorTwo() {
+    public PlayerEntity getCompetitorTwo() {
         return playerTwo;
     }
 
-    public void setCompetitorTwo(PlayerData playerTwo) {
+    public void setCompetitorTwo(PlayerEntity playerTwo) {
         this.playerTwo = playerTwo;
     }
 

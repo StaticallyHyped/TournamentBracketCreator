@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.tournamentbracketcreator.entity.MatchEntity;
 import com.example.tournamentbracketcreator.model.Match;
@@ -13,6 +14,7 @@ import com.example.tournamentbracketcreator.model.Match;
 import java.util.List;
 
 import static androidx.room.OnConflictStrategy.IGNORE;
+import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface MatchDao {
@@ -31,6 +33,9 @@ public interface MatchDao {
 
     @Insert(onConflict = IGNORE)
     void insertMatch(MatchEntity match);
+
+    @Update(onConflict = REPLACE)
+    void replaceMatch(MatchEntity match);
 
     @Query("DELETE FROM matches")
     void deleteAll();

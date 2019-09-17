@@ -29,7 +29,7 @@ import com.example.tournamentbracketcreator.utility.DateConverter;
 import java.util.List;
 
 @Database(entities = {PlayerEntity.class, PlayerFtsEntity.class,
-        WinEntity.class, CompetitorEntity.class, MatchEntity.class}, version = 1)
+        WinEntity.class, CompetitorEntity.class, MatchEntity.class}, version = 3)
 //, exportSchema = false
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
@@ -39,13 +39,12 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
 
     @VisibleForTesting
-    public static final String DATABASE_NAME = "tournament-db-test1_1";
+    public static final String DATABASE_NAME = "tournament-db-test1_2";
 
     public abstract PlayerDao playerDao();
     public abstract WinDao winDao();
     public abstract CompetitorDao competitorDao();
     public abstract MatchDao matchDao();
-
 
     private final MutableLiveData<Boolean> mIsDatabaseCreated = new MutableLiveData<>();
 

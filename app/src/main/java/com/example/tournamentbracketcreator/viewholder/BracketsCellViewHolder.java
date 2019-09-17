@@ -30,7 +30,6 @@ public class BracketsCellViewHolder extends RecyclerView.ViewHolder implements V
 
     public BracketsCellViewHolder(View itemView, ArrowClickCallback listener) {
         super(itemView);
-        Log.d(TAG, "BracketsCellViewHolder: starts");
         teamOneName = itemView.findViewById(R.id.teamone_name);
         teamTwoName = itemView.findViewById(R.id.teamtwo_name);
         teamOneScore = itemView.findViewById(R.id.teamone_score);
@@ -39,9 +38,7 @@ public class BracketsCellViewHolder extends RecyclerView.ViewHolder implements V
         //update to make the button listen, not the whole view
         updateScoreButton = itemView.findViewById(R.id.update_score_button);
         root = itemView.findViewById(R.id.layout_cellbracket_RL);
-        Log.d(TAG, "BracketsCellViewHolder: scoreButton id: " + updateScoreButton.getId());
         updateScoreButton.setOnClickListener(this);
-        Log.d(TAG, "BracketsCellViewHolder: setOnClickListener");
     }
 
     public void setAnimation(int height){
@@ -75,13 +72,9 @@ public class BracketsCellViewHolder extends RecyclerView.ViewHolder implements V
 
     @Override
     public void onClick(View v) {
-        Log.d(TAG, "onClick: before onClick");
-        Log.d(TAG, "onClick: button id: " + updateScoreButton.getId());
         if (mListener == null){
             Log.d(TAG, "onClick: mListener is null");
         }
-        Log.d(TAG, "onClick: getAdapterPosition: " + getAdapterPosition());
-        Log.d(TAG, "onClick: view id: " + v.getId());
         mListener.onArrowClick(v, getAdapterPosition());
     }
 }

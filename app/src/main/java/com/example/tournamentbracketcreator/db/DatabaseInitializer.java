@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.example.tournamentbracketcreator.entity.MatchEntity;
 import com.example.tournamentbracketcreator.entity.PlayerEntity;
 import com.example.tournamentbracketcreator.model.Data;
+import com.example.tournamentbracketcreator.model.Match;
 
 import java.util.ArrayList;
 
@@ -29,15 +30,12 @@ public class DatabaseInitializer {
         populateFromData(db);
     }
 
-    private static MatchEntity addMatch(final AppDatabase db, final long id,
-                                        final String playerOneId, final String playerTwoId,
-                                        final String playerOneScore, final String playerTwoScore){
+    private static MatchEntity addMatch(final AppDatabase db, final int id,
+                                        final String playerOneId, final String playerTwoId){
         MatchEntity match = new MatchEntity();
         match.id = id;
         match.playerOneId = playerOneId;
-        match.playerOneScore = playerOneScore;
         match.playerTwoId = playerTwoId;
-        match.playerTwoScore = playerTwoScore;
         db.matchDao().insertMatch(match);
         return match;
     }
@@ -74,7 +72,6 @@ public class DatabaseInitializer {
             // matches are created as players are added
             // the case blocks prevent matches from being created if no/insufficient players are present
             
-            
             switch (e){
                 case (0):
                     String[] p1 = tournPool.get(e);
@@ -84,7 +81,7 @@ public class DatabaseInitializer {
                 case (1):
                     String[] p2 = tournPool.get(e);
                     player2 = addPlayer(db, p2[1], p2[0]);
-                    MatchEntity match1 = addMatch(db, 1 ,player1.getId(), player2.getId(), "0", "0" );
+                    MatchEntity match1 = addMatch(db, 1 ,player1.getId(), player2.getId());
                     Log.d(TAG, "populateFromData: p2 added");
                     break;
                 case (2):
@@ -95,7 +92,7 @@ public class DatabaseInitializer {
                 case (3):
                     String[] p4 = tournPool.get(e);
                     player4 = addPlayer(db, p4[1], p4[0]);
-                    MatchEntity match2 = addMatch(db, 2 ,player3.getId(), player4.getId(), "0", "0" );
+                    MatchEntity match2 = addMatch(db, 2 ,player3.getId(), player4.getId());
                     Log.d(TAG, "populateFromData: p4 added");
                     break;
                 case (4):
@@ -106,7 +103,7 @@ public class DatabaseInitializer {
                 case (5):
                     String[] p6 = tournPool.get(e);
                     player6 = addPlayer(db, p6[1], p6[0]);
-                    MatchEntity match3 = addMatch(db, 3 ,player5.getId(), player6.getId(), "0", "0" );
+                    MatchEntity match3 = addMatch(db, 3 ,player5.getId(), player6.getId());
                     break;
                 case (6):
                     String[] p7 = tournPool.get(e);
@@ -115,11 +112,16 @@ public class DatabaseInitializer {
                 case (7):
                     String[] p8 = tournPool.get(e);
                     player8 = addPlayer(db, p8[1], p8[0]);
-                    MatchEntity match4 = addMatch(db, 4 ,player7.getId(), player8.getId(), "0", "0" );
+                    MatchEntity match4 = addMatch(db, 4 ,player7.getId(), player8.getId());
                     break;
             }
         }
+       /* MatchEntity match5 = addMatch(db, 5, "123456", null, "0", "0");
+        MatchEntity match6 = addMatch(db, 6, null, null, "0", "0");
+        MatchEntity match7 = addMatch(db, 7, null, null, "0", "0");
+*/
   }
+
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>{
 

@@ -107,12 +107,7 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
                              @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: starts");
         View root = inflater.inflate(R.layout.fragment_playerpoola, container, false);
-        
-//        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_playerpoola, container, false);
-//        mPlayerAdapter = new PlayerAdapter(mPlayerClickCallback);
-//        mBinding.poolaRV.setAdapter(mPlayerAdapter);
-        //mBinding.playersList.setAdapter(mPlayerAdapter);
-        // mPlayerAdapter
+
         addToList = root.findViewById(R.id.add_new_playerBtn);
         removeFromList = root.findViewById(R.id.remove_playerBtn);
         addToTournPool = root.findViewById(R.id.add_to_tournBtn);
@@ -132,43 +127,10 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated: starts");
         super.onActivityCreated(savedInstanceState);
-       
-//        final PlayerListViewModel viewModel = new ViewModelProvider(this).get(PlayerListViewModel.class);
         //TODO add search button
-//        subscribeUi(viewModel.getPlayers());
-       // mBinding.setPlayerViewModel(model);
-       // subscribeToModel(model);
         onAddNewPlayerDialog();
-        //addPlayerToTournPool();
         onClick(addToTournPool);
     }
-    
-    /*private void subscribeUi(LiveData<List<PlayerEntity>> liveData){
-        liveData.observe(this, new Observer<List<PlayerEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<PlayerEntity> playerEntities) {
-                if (playerEntities != null) {
-                    Log.d(TAG, "onChanged: not null");
-                    mBinding.setIsLoading(false);
-                    mPlayerAdapter.setPlayerList(playerEntities);
-                } else {
-                    Log.d(TAG, "onChanged: null");
-                    mBinding.setIsLoading(true);
-                }
-                
-                mBinding.executePendingBindings();
-            }
-        });
-    }*/
-    
-    /*private void subscribeToModel(final PlayerViewModel model){
-        model.getObservablePlayer().observe(this, new Observer<PlayerEntity>() {
-            @Override
-            public void onChanged(PlayerEntity playerEntity) {
-                model.setPlayer(playerEntity);
-            }
-        });
-    }*/
 
     @Override
     public void onResume() {
@@ -177,16 +139,6 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
         query();
     }
 
-    /*private void testPoolBtn(){
-        addToTournPool.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TournPoolBRVAdapter poolBAdapter = new TournPoolBRVAdapter(getContext());
-                poolBAdapter.notifyDataSetChanged();
-                Log.d(TAG, "onClick: clicked arrow button: " + Data.getTournPoolList().toString());
-            }
-        });
-    }*/
 
     public void query() {
         if (mAWSAppSynClient == null) {
@@ -209,7 +161,6 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
                         players = new ArrayList<>();
                     }
                     mAdapter.setItems(players);
-                    //mAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -242,7 +193,6 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
     @Override
     public void onClick(View view){
         Log.d(TAG, "onClick: starts");
-        //TODO change focus of ViewPagerAdapter to page 1, vPager.setCurrentItem(1);
         addToTournPool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,13 +214,6 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
         Toast.makeText(getContext(), inputText + " has been added to the list of players", Toast.LENGTH_SHORT)
         .show();
     }
-    //Overridden methods for the sake of debugging
-
-   /* @Override
-    public void onHiddenChanged(boolean hidden) {
-        Log.d(TAG, "onHiddenChanged: starts");
-        super.onHiddenChanged(hidden);
-    }*/
 
     @Override
     public void onAttachFragment(Fragment childFragment) {
@@ -301,21 +244,5 @@ public class PlayerpoolAFragment extends Fragment implements AddNewPlayerDialogF
         Log.d(TAG, "onDetach: starts");
         super.onDetach();
     }
-
-    /*@Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    for things you want to initialize when you're sure the activity is fully created
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PlayerpoolAViewModel.class);
-        // TODO: Use the ViewModel
-    }*/
-    /*private final PlayerClickCallback mPlayerClickCallback = new PlayerClickCallback() {
-        @Override
-        public void onClick(Player player) {
-            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-                ((StartTournActivity)) getActivity()).show(player);
-            }
-        }
-    }*/
 
 }

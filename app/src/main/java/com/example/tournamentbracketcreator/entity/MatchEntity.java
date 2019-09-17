@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.tournamentbracketcreator.model.Match;
@@ -17,12 +18,10 @@ import com.example.tournamentbracketcreator.model.Match;
         childColumns = "playerTwoId",
         onDelete = ForeignKey.CASCADE)
 })
-
-
 public class MatchEntity implements Match {
     @PrimaryKey (autoGenerate = true)
     @NonNull
-    public long id;
+    public int id;
 
     @ColumnInfo(name = "playerOneId")
     public String playerOneId;
@@ -30,17 +29,13 @@ public class MatchEntity implements Match {
     @ColumnInfo(name = "playerTwoId")
     public String playerTwoId;
 
-    public String playerOneScore;
-    public String playerTwoScore;
-
-
 
     @Override
     public int getId() {
-        return 0;
+        return id;
     }
 
-    @Override
+    /*@Override
     public PlayerEntity getPlayerOne() {
         return null;
     }
@@ -48,9 +43,9 @@ public class MatchEntity implements Match {
     @Override
     public PlayerEntity getPlayerTwo() {
         return null;
-    }
+    }*/
 
-    public void setId(@NonNull long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -70,19 +65,21 @@ public class MatchEntity implements Match {
         this.playerTwoId = playerTwoId;
     }
 
-    public String getPlayerOneScore() {
-        return playerOneScore;
+
+    public MatchEntity(){
+
     }
 
-    public void setPlayerOneScore(String playerOneScore) {
-        this.playerOneScore = playerOneScore;
+    @Ignore
+    public MatchEntity(String playerOneId, String playerTwoId){
+
+        this.playerOneId = playerOneId;
+        this.playerTwoId = playerTwoId;
     }
 
-    public String getPlayerTwoScore() {
-        return playerTwoScore;
-    }
-
-    public void setPlayerTwoScore(String playerTwoScore) {
-        this.playerTwoScore = playerTwoScore;
-    }
+    /*public MatchEntity(Match match){
+        this.id = match.getId();
+        this.playerOneId = match.getPlayerOneId();
+        this.playerTwoId = match.getPlayerTwoId();
+    }*/
 }

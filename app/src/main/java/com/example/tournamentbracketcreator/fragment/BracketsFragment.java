@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableList;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -45,7 +46,14 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
     private PlayerViewModel mPlayerViewModel;
     private AppDatabase mDb;
     List<PlayerEntity> playerList;
-    List<MatchEntity> matchList;
+//    public ObservableList<MatchEntity> matchList;
+    public List<MatchEntity> matchList;
+    public static List<MatchEntity> staticMatchesList;
+    public static List<PlayerEntity> staticPlayersList;
+    ArrayList<MatchData> column1MatchesList = new ArrayList<>();
+    ArrayList<MatchData> column2MatchesList = new ArrayList<>();
+    ArrayList<MatchData> column3MatchesList = new ArrayList<>();
+
 
     public static BracketsFragment newInstance() {
         return new BracketsFragment();
@@ -61,33 +69,16 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: starts");
-       
         mPlayerViewModel = new ViewModelProvider(this).get(PlayerViewModel.class);
-        playerList = mPlayerViewModel.mObservablePlayers.getValue();
-        matchList = mPlayerViewModel.mObservableMatches.getValue();
-//        initPlayers(playerList);
         subscribeUiPlayers();
-//        mBracketsCellAdapter = new BracketsCellAdapter(getBracketsFragment());
-
+        subscribeUiMatches();
         return inflater.inflate(R.layout.fragment_brackets, container, false);
     }
 
-    public void initPlayers(List<PlayerEntity> playerEntities){
+
+    /*public void initPlayers(List<PlayerEntity> playerEntities){
         Log.d(TAG, "initPlayers: starts");
         setPlayerData(playerEntities);
-    }
-
-   /* private void subscribeUiMatches(){
-        mPlayerViewModel.mObservableMatches.observe(this, new Observer<List<MatchEntity>>() {
-            @Override
-            public void onChanged(List<MatchEntity> matchEntities) {
-                StringBuilder sb = new StringBuilder();
-                for (MatchEntity match : matchEntities){
-                    sb.append(match.playerOneScore);
-                    sb.append(match.playerTwoScore);
-                }
-            }
-        });
     }*/
 
     private void subscribeUiPlayers(){
@@ -95,9 +86,9 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
         mPlayerViewModel.mObservablePlayers.observe(this, new Observer<List<PlayerEntity>>() {
             @Override
             public void onChanged(List<PlayerEntity> playerEntities) {
-                Log.d(TAG, "onChanged: starts");
+                Log.d(TAG, "subscribe players onChanged: starts");
+                staticPlayersList = mPlayerViewModel.mObservablePlayers.getValue();
                 setData(playerEntities);
-
                 initViews();
                 initViewPagerAdapter();
                // showPlayersInUi(playerEntities);
@@ -108,7 +99,6 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
         Log.d(TAG, "showPlayersInUi: starts");
         Log.d(TAG, "showPlayersInUi: playerEntities size: " + playerEntities.size());
         /*StringBuilder sb = new StringBuilder();
-
         for (PlayerEntity player : playerEntities){
            sb.append(player.name);
            sb.append(player.id);
@@ -123,18 +113,24 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
     }
 
 //    MatchData matchData5;
-    ArrayList<MatchData> column2MatchesList = new ArrayList<>();
+//    ArrayList<MatchData> column2MatchesList = new ArrayList<>();
     ColumnData columnData2 = new ColumnData(column2MatchesList);
 
-    public void subscribeUiMatch(){
+    public void subscribeUiMatches(){
         mPlayerViewModel.mObservableMatches.observe(this, new Observer<List<MatchEntity>>() {
             @Override
             public void onChanged(List<MatchEntity> matchEntities) {
-
+                Log.d(TAG, "subscribe matches onChanged: starts");
+                staticMatchesList = mPlayerViewModel.mObservableMatches.getValue();
+                setMatchData(matchEntities);
+                initViews();
+//                initViewPagerAdapter();
+                if (staticMatchesList != null || !staticMatchesList.isEmpty()) {
+                    Log.d(TAG, "onChanged: staticMatchesList: " + staticMatchesList.size());
+                }
             }
         });
     }
-
     @Override
     public void onResume() {
         Log.d(TAG, "onResume: starts");
@@ -142,79 +138,62 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
 
     }
 
-    private void setPlayerData(final @NonNull List<PlayerEntity> playerEntities) {
-        Log.d(TAG, "setPlayerData: starts");
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        playerSection = new ArrayList<>();
-
-        PlayerEntity playerOne = null;
-        PlayerEntity playerTwo = null;
-        PlayerEntity playerThree = null;
-        PlayerEntity playerFour = null;
-        PlayerEntity playerFive = null;
+    private void setMatchData(final @NonNull List<MatchEntity> matchEntities) {
+        Log.d(TAG, "setData: starts");
+        sectionList = new ArrayList<>();
+        /*ArrayList<MatchData> column1MatchesList = new ArrayList<>();
+        ArrayList<MatchData> column2MatchesList = new ArrayList<>();
+        ArrayList<MatchData> column3MatchesList = new ArrayList<>();*/
+        MatchData matchData1 = null;
+        MatchData matchData2 = null;
+        MatchData matchData3 = null;
+        MatchData matchData4 = null;
         PlayerEntity playerSix = null;
-        PlayerEntity playerSeven = null;
         PlayerEntity playerEight = null;
 
-        Log.d(TAG, "setPlayerData: playerEntities size: " + playerEntities.size());
-        for (int e = 0; e < playerEntities.size(); e++) {
-            switch (e) {
-                case (0):
-                    Log.d(TAG, "setPlayerData: case 0");
-                    if (playerEntities.get(e).getId() != null){
-                        Log.d(TAG, "setPlayerData: not null");
-                        playerOne = new PlayerEntity(playerEntities.get(e).getId(),
-                                playerEntities.get(e).getName());
-                    } else {
-                        Log.d(TAG, "setPlayerData: null");
-                    }
-                    break;
-                case (1):
-                    Log.d(TAG, "setPlayerData: case 1");
-                    playerTwo = new PlayerEntity(playerEntities.get(e).getId(),
-                            playerEntities.get(e).getName());
-                    break;
-                case (2):
-                    Log.d(TAG, "setPlayerData: case 2");
-                    playerThree = new PlayerEntity(playerEntities.get(e).getId(),
-                            playerEntities.get(e).getName());
-                    break;
-                case (3):
-                    Log.d(TAG, "setPlayerData: case 3");
-                    playerFour = new PlayerEntity(playerEntities.get(e).getId(),
-                            playerEntities.get(e).getName());
-                    break;
-                case (4):
-                    Log.d(TAG, "setPlayerData: case 4");
-                    playerFive = new PlayerEntity(playerEntities.get(e).getId(),
-                            playerEntities.get(e).getName());
-                    break;
-                case (5):
-                    Log.d(TAG, "setPlayerData: case 5");
-                    playerSix = new PlayerEntity(playerEntities.get(e).getId(),
-                            playerEntities.get(e).getName());
-                    break;
-                case (6):
-                    Log.d(TAG, "setPlayerData: case 6");
-                    playerSeven = new PlayerEntity(playerEntities.get(e).getId(),
-                            playerEntities.get(e).getName());
-                    break;
-                case (7):
-                    playerEight = new PlayerEntity(playerEntities.get(e).getId(),
-                            playerEntities.get(e).getName());
-                    break;
-                default:
-                    throw new IndexOutOfBoundsException("no player data in array");
-            }
+
+        if (matchData1 != null) {
+            Log.d(TAG, "setData: set match1");
+            column1MatchesList.add(matchEntities.get(0).getId(), matchData1);
         }
-        setMatchData(playerOne, playerTwo, playerThree, playerFour, playerFive, playerSix, playerSeven, playerEight);
+        if (matchData2 != null) {
+            Log.d(TAG, "setData: set match2");
+            column1MatchesList.add(matchData2);
+        }
+        if (matchData3 != null) {
+            Log.d(TAG, "setData: set match3");
+            column1MatchesList.add(matchData3);
+        }
+        if (matchData4 != null) {
+            Log.d(TAG, "setData: set match4");
+            column1MatchesList.add(matchData4);
+        }
+
+        ColumnData column1Data = new ColumnData(column1MatchesList);
+        sectionList.add(column1Data);
+        //END COLUMN 1 DATA, START COLUMN TWO - to be generated programmatically based on wins
+
+        PlayerEntity playerNine = new PlayerEntity("9", "TBD");
+        PlayerEntity playerTen = new PlayerEntity("10","TBD");
+        PlayerEntity playerEleven = new PlayerEntity("11", "TBD");
+        PlayerEntity playerTwelve = new PlayerEntity("12","TBD");
+        MatchData matchData5 = new MatchData(5, playerNine, playerTen);
+        MatchData matchData6 = new MatchData(6, playerEleven, playerTwelve);
+        column2MatchesList.add(matchData5);
+        column2MatchesList.add(matchData6);
+        columnData2 = new ColumnData(column2MatchesList);
+        sectionList.add(columnData2);
+        PlayerEntity competitorThirteen = new PlayerEntity("13","TBD");
+        PlayerEntity competitorFourteen = new PlayerEntity("14","TBD");
+        MatchData matchData7 = new MatchData(7, competitorThirteen, competitorFourteen);
+
+        column3MatchesList.add(matchData7);
+        //END COLUMN 2 DATA, START COLUMN 3
+        ColumnData columnData3 = new ColumnData(column3MatchesList);
+        sectionList.add(columnData3);
 
     }
-    public void setMatchData(PlayerEntity playerOne, PlayerEntity playerTwo, PlayerEntity playerThree,
+   /* public void setMatchData(PlayerEntity playerOne, PlayerEntity playerTwo, PlayerEntity playerThree,
                              PlayerEntity playerFour, PlayerEntity playerFive, PlayerEntity playerSix, PlayerEntity playerSeven, PlayerEntity playerEight){
 
         Log.d(TAG, "setMatchData: starts");
@@ -308,22 +287,19 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
         sectionList.add(columnData3);
 
     }
-
+*/
     public void setData(final @NonNull List<PlayerEntity> playerEntities) {
         Log.d(TAG, "setData: starts");
         sectionList = new ArrayList<>();
         ArrayList<MatchData> column1MatchesList = new ArrayList<>();
         ArrayList<MatchData> column2MatchesList = new ArrayList<>();
         ArrayList<MatchData> column3MatchesList = new ArrayList<>();
-
         MatchData matchData1 = null;
         MatchData matchData2 = null;
         MatchData matchData3 = null;
         MatchData matchData4 = null;
-
         PlayerEntity playerSix = null;
         PlayerEntity playerEight = null;
-
 
         for (int e = 0; e < playerEntities.size(); e++) {
             switch (e) {
@@ -336,38 +312,37 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
                 case (3):
                     //minimum of 4 players needed to start a tournament
                     matchData1 = new MatchData(1, playerEntities.get(0), playerEntities.get(1));
-                    matchData2 = new MatchData(1, playerEntities.get(2), playerEntities.get(3));
+                    matchData2 = new MatchData(2, playerEntities.get(2), playerEntities.get(3));
                     Log.d(TAG, "setData: case 3");
                     break;
                 case (4):
                     //set up 'Bye' round if only 5 players present
-                    if (playerEntities.get(5) == null){
+                    if (playerEntities.size() < 6){
+                        Log.d(TAG, "setData: case 4, in if statement");
                         playerSix = new PlayerEntity("6", "TBD");
-                        matchData3 = new MatchData(1, playerEntities.get(4), playerSix);
+                        matchData3 = new MatchData(3, playerEntities.get(4), playerSix);
                     }
                     break;
                 case (5):
                     Log.d(TAG, "setData: case 5");
-                    matchData3 = new MatchData(1, playerEntities.get(4), playerEntities.get(5));
+                    matchData3 = new MatchData(3, playerEntities.get(4), playerEntities.get(5));
                     break;
                 case (6):
                     //Bye round for match 4
                     Log.d(TAG, "setData: case 6");
-                    if (playerEntities.get(7) == null){
+                    if (playerEntities.size() < 8){
                         playerEight = new PlayerEntity("8", "TBD");
-                        matchData4 = new MatchData(1, playerEntities.get(4), playerEight);
+                        matchData4 = new MatchData(4, playerEntities.get(4), playerEight);
                     }
                     break;
                 case (7):
                     Log.d(TAG, "setData: case 7");
-                    matchData3 = new MatchData(1, playerEntities.get(6), playerEntities.get(7));
+                    matchData4 = new MatchData(4, playerEntities.get(6), playerEntities.get(7));
                     break;
                 default:
                     throw new IndexOutOfBoundsException("no player data in aray");
             }
         }
-        Log.d(TAG, "setData: names loop: ");
-        //add to first column
 
         if (matchData1 != null) {
             Log.d(TAG, "setData: set match1");
@@ -391,11 +366,9 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
         //END COLUMN 1 DATA, START COLUMN TWO - to be generated programmatically based on wins
 
         PlayerEntity playerNine = new PlayerEntity("9", "TBD");
-        Log.d(TAG, "setData: competitorNine: " + playerNine.getName());
         PlayerEntity playerTen = new PlayerEntity("10","TBD");
         PlayerEntity playerEleven = new PlayerEntity("11", "TBD");
         PlayerEntity playerTwelve = new PlayerEntity("12","TBD");
-
         MatchData matchData5 = new MatchData(5, playerNine, playerTen);
         MatchData matchData6 = new MatchData(6, playerEleven, playerTwelve);
         column2MatchesList.add(matchData5);
@@ -405,6 +378,11 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
         PlayerEntity competitorThirteen = new PlayerEntity("13","TBD");
         PlayerEntity competitorFourteen = new PlayerEntity("14","TBD");
         MatchData matchData7 = new MatchData(7, competitorThirteen, competitorFourteen);
+
+        /*staticMatchesList.add(new MatchEntity( 5, playerNine.getId(), playerTen.getId()));
+        staticMatchesList.add(new MatchEntity(6, playerEleven.getId(), playerTwelve.getId()));
+        staticMatchesList.add(new MatchEntity(7, competitorThirteen.getId(), competitorFourteen.getId()));*/
+
         column3MatchesList.add(matchData7);
         //END COLUMN 2 DATA, START COLUMN 3
         ColumnData columnData3 = new ColumnData(column3MatchesList);
@@ -413,10 +391,7 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
     }
 
     private void initViewPagerAdapter() {
-        Log.d(TAG, "initViewPagerAdapter: starts");
-
         sectionAdapter = new BracketsSectionAdapter(getChildFragmentManager(), sectionList);
-        Log.d(TAG, "initViewPagerAdapter: sectionList size: " + sectionList.size());
         viewPager.setOffscreenPageLimit(10);
         viewPager.setAdapter(sectionAdapter);
         viewPager.setCurrentItem(0);
@@ -424,13 +399,10 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
         viewPager.setHorizontalFadingEdgeEnabled(true);
         viewPager.setFadingEdgeLength(50);
         viewPager.addOnPageChangeListener(this);
-        Log.d(TAG, "initViewPagerAdapter: exits");
     }
 
     private void initViews() {
-        Log.d(TAG, "initViews: starts");
         viewPager = (WrapContentHtViewPager) getView().findViewById(R.id.frag_brackets_container);
-
     }
 
     @Override
@@ -478,16 +450,13 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
 
     @Override
     public void onPageSelected(int position) {
-
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 
     public BracketColumnFragment getBracketsFragment(int position) {
-        Log.d(TAG, "getBracketsFragment: starts");
         BracketColumnFragment bracketsFrag = null;
         if (getChildFragmentManager() != null) {
             List<Fragment> fragments = getChildFragmentManager().getFragments();
@@ -503,5 +472,4 @@ public class BracketsFragment extends Fragment implements ViewPager.OnPageChange
         }
         return bracketsFrag;
     }
-
 }

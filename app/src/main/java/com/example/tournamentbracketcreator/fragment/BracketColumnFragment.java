@@ -133,10 +133,8 @@ public class BracketColumnFragment extends Fragment {
     @SuppressLint("WrongConstant")
     public void initAdapter() {
         Log.d(TAG, "initAdapter: starts");
-        ArrowClickCallback listener = (View v, int position) -> {
-            Log.d(TAG, "onViewCreated: clicked!");
-        };
-        adapter = new BracketsCellAdapter(this, getContext(), playerData, listener);
+
+        adapter = new BracketsCellAdapter(this, getContext(), playerData);
         if (mBracketRV != null){
             mBracketRV.setHasFixedSize(true);
             mBracketRV.setNestedScrollingEnabled(false);

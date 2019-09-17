@@ -8,6 +8,9 @@ if not, install npm using npm install in your project's root folder
 
 - AWS amplify - check to see if there's a version installed already using amplify -v
 if not, install amplify using amplify install
+
+Use this as a guide if you don't have NPM, Node.JS, or Amplify already installed: https://aws-amplify.github.io/docs/
+
 It is recommended to have a fully built, or near-fully built, DynamoDB api set up, with schema, data sources and resolvers, before running the next step. It is possible to update your schema after your apollo code has been generated, but it takes extra steps. 
 Once your back end is established, run amplify init to begin the process of pulling your data from the cloud. Click Y (the default) until you get to the step where they ask if you want to create a new API. Say no, and select the API you created previously and click through the defaults. Run amplify push and wait for the data to be retrieved. Once retrieved, apollo should generate your .java, .graphql, .json, and .schema files. If for some reason it fails to retrieve the data, run amplify gql-compile to run it again. 
 
